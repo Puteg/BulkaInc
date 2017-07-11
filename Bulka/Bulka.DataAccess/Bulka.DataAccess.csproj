@@ -55,18 +55,6 @@
   <ItemGroup>
     <Compile Include="BulkaContext.cs" />
     <Compile Include="BulkaDbInitializer.cs" />
-    <Compile Include="Migrations\201707110834192_1.cs" />
-    <Compile Include="Migrations\201707110834192_1.Designer.cs">
-      <DependentUpon>201707110834192_1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201707111351317_2.cs" />
-    <Compile Include="Migrations\201707111351317_2.Designer.cs">
-      <DependentUpon>201707111351317_2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201707111516062_3.cs" />
-    <Compile Include="Migrations\201707111516062_3.Designer.cs">
-      <DependentUpon>201707111516062_3.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -79,21 +67,6 @@
       <Project>{7D0DBF37-19B5-4350-BA2A-D6382550F556}</Project>
       <Name>Bulka.DataModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Bulka.Logger\Bulka.Logger.csproj">
-      <Project>{AC692696-B2B6-4F5A-9D38-928351EB678E}</Project>
-      <Name>Bulka.Logger</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201707110834192_1.resx">
-      <DependentUpon>201707110834192_1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201707111351317_2.resx">
-      <DependentUpon>201707111351317_2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201707111516062_3.resx">
-      <DependentUpon>201707111516062_3.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
