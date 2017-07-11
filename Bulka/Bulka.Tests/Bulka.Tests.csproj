@@ -113,6 +113,10 @@
       <Project>{7D0DBF37-19B5-4350-BA2A-D6382550F556}</Project>
       <Name>Bulka.DataModel</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Bulka.Repository\Bulka.Repository.csproj">
+      <Project>{64F1A16A-5308-4A1B-919F-A64ACB71823E}</Project>
+      <Name>Bulka.Repository</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bulka\Bulka.csproj">
       <Project>{3236B4E1-8076-4F26-8B18-ED1AFDFA030A}</Project>
       <Name>Bulka</Name>

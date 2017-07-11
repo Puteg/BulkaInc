@@ -1,18 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bulka.DataModel
 {
     public class Player
     {
         public int Id { get; set; }
-        public int AccountId { get; set; }
+        public Guid AccountId { get; set; }
 
-        public string FirstName { get; set; }
+        public string Name { get; set; }
+        public string Address { get; set; }
         public string Phone { get; set; }
+        public string Vk { get; set; }
+        public string ImageUrl { get; set; }
+        public string AdditionInfo { get; set; }
 
         public virtual Account Account { get; set; }
     }

@@ -1,0 +1,41 @@
+﻿@model List<Bulka.DataModel.Player>
+
+@{
+    ViewBag.Title = "Игроки";
+}
+
+<div class="row">
+    @foreach (var player in Model)
+    {
+        <div class="col-md-4 col-sm-4 col-xs-12 profile_details">
+            <div class="well profile_view">
+                <div class="col-sm-12">
+                    <h4 class="brief"><i>Игрок</i></h4>
+                    <div class="left col-xs-7">
+                        <h2>@player.Name</h2>
+                        <p>
+                            <strong>Информация: </strong> @player.AdditionInfo
+                        </p>
+                        <ul class="list-unstyled">
+                            <li><i class="fa fa-building"></i> Адресс: @player.Address</li>
+                            <li><i class="fa fa-phone"></i> Телефона: @player.Phone</li>
+                            <li><i class="fa fa-vk"></i> Вконтакте: <a href="@player.Vk">@player.Vk</a> </li>
+                        </ul>
+                    </div>
+                    <div class="right col-xs-5 text-center">
+                        <img src="@player.ImageUrl" hralt="" class="img-circle img-responsive">
+                    </div>
+                </div>
+                <div class="col-xs-12 bottom">
+                    <div class="col-xs-12 col-sm-6 emphasis">
+                        <a href="~/Player/Profile/@player.Id" type="button" class="btn btn-primary btn-default">
+                            <i class="fa fa-user"> </i> Профиль
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+</div>
+
