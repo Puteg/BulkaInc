@@ -5,7 +5,7 @@
 }
 
 <div class="x_content">
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("Edit", "Player", FormMethod.Post, new { role = "form" }))
     {
         @Html.AntiForgeryToken()
 

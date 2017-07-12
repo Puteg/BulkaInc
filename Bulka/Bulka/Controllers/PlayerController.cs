@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
+using Bulka.DataModel;
 using Bulka.Models;
 using Bulka.Repository;
 
 namespace Bulka.Controllers
 {
+    [Authorize]
     public class PlayerController : Controller
     {
         private readonly PlayersRepository _playersRepository;
@@ -26,8 +25,14 @@ namespace Bulka.Controllers
 
         public ActionResult All()
         {
-            var players = _playersRepository.GetAll().ToList();
+            var players = _playersRepository.GetAll().OrderByDescending(c => c.Id).ToList();
             return View(players);
+        }
+
+        [HttpGet]
+        public ActionResult New()
+        {
+            return View("Edit", new PlayerEditModel());
         }
 
         [HttpGet]
@@ -63,7 +68,20 @@ namespace Bulka.Controllers
         {
             if (ModelState.IsValid)
             {
-                var player = _playersRepository.FindBy(c => c.Id == model.Id).Single();
+                var isNew = model.Id == 0;
+                Player player;
+
+                if (isNew)
+                {
+                    player = new Player
+                    {
+                        Account = new Account()
+                    };
+                }
+                else
+                {
+                    player = _playersRepository.FindBy(c => c.Id == model.Id).Single();
+                }
 
                 player.Phone = model.Phone;
                 player.Name = model.Name;
@@ -72,8 +90,13 @@ namespace Bulka.Controllers
                 player.Vk = model.Vk;
                 player.AdditionInfo = model.AdditionInfo;
 
+                if (isNew)
+                {
+                    _playersRepository.Add(player);
+                }
+
                 _playersRepository.Save();
-                return RedirectToAction("Profile", new { @id = model.Id});
+                return RedirectToAction("Profile", new { @id = player.Id});
             }
 
             return View(model);

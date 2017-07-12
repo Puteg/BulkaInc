@@ -25,7 +25,7 @@ namespace Bulka.DataAccess.Migrations
                 Phone = "+ 7 966 333 22 11",
                 AdditionInfo = "Сильный игрок",
                 Vk = "https://vk.com/alexsting1",
-                ImageUrl = "~/Images/img1.jpg"
+                ImageUrl = "/Images/img1.jpg"
             });
 
             players.Add(new Player()
@@ -37,7 +37,7 @@ namespace Bulka.DataAccess.Migrations
                 Phone = "+ 7 966 333 22 12",
                 AdditionInfo = "Любит кольян",
                 Vk = "https://vk.com/alexsting1",
-                ImageUrl = "~/Images/img2.jpg"
+                ImageUrl = "/Images/img2.jpg"
             });
 
             players.Add(new Player()
@@ -49,7 +49,7 @@ namespace Bulka.DataAccess.Migrations
                 Phone = "+ 7 966 333 22 13",
                 AdditionInfo = "Лудик",
                 Vk = "https://vk.com/alexsting1",
-                ImageUrl = "~/Images/img3.jpg"
+                ImageUrl = "/Images/img3.jpg"
             });
 
             players.Add(new Player()
@@ -61,7 +61,7 @@ namespace Bulka.DataAccess.Migrations
                 Phone = "+ 7 966 333 22 14",
                 AdditionInfo = "Сильный игрок",
                 Vk = "https://vk.com/alexsting1",
-                ImageUrl = "~/Images/img4.jpg"
+                ImageUrl = "/Images/img4.jpg"
             });
 
             players.Add(new Player()
@@ -73,7 +73,7 @@ namespace Bulka.DataAccess.Migrations
                 Phone = "+ 7 966 333 22 11",
                 AdditionInfo = "Сильный игрок",
                 Vk = "https://vk.com/alexsting1",
-                ImageUrl = "~/Images/img5.jpg"
+                ImageUrl = "/Images/img5.jpg"
             });
 
             players.Add(new Player()
@@ -85,7 +85,7 @@ namespace Bulka.DataAccess.Migrations
                 Phone = "+ 7 966 333 22 11",
                 AdditionInfo = "Сильный игрок",
                 Vk = "https://vk.com/alexsting1",
-                ImageUrl = "~/Images/img6.jpg"
+                ImageUrl = "/Images/img6.jpg"
             });
 
             players.Add(new Player()
@@ -97,7 +97,7 @@ namespace Bulka.DataAccess.Migrations
                 Phone = "+ 7 966 333 22 11",
                 AdditionInfo = "Сильный игрок",
                 Vk = "https://vk.com/alexsting1",
-                ImageUrl = "~/Images/img7.jpg"
+                ImageUrl = "/Images/img7.jpg"
             });
 
             players.Add(new Player()
@@ -109,7 +109,7 @@ namespace Bulka.DataAccess.Migrations
                 Phone = "+ 7 966 333 22 11",
                 AdditionInfo = "Сильный игрок",
                 Vk = "https://vk.com/alexsting1",
-                ImageUrl = "~/Images/img8.jpg"
+                ImageUrl = "/Images/img8.jpg"
             });
 
             players.Add(new Player()
@@ -121,7 +121,7 @@ namespace Bulka.DataAccess.Migrations
                 Phone = "+ 7 966 333 22 11",
                 AdditionInfo = "Сильный игрок",
                 Vk = "https://vk.com/alexsting1",
-                ImageUrl = "~/Images/img9.jpg"
+                ImageUrl = "/Images/img9.jpg"
             });
 
             foreach (Player std in players)
