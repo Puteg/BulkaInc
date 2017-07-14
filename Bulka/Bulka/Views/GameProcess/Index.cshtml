@@ -1,142 +1,212 @@
-﻿<table class="table  projects">
-    <thead>
-        <tr>
-            <th style="width: 1%">#</th>
-            <th style="width: 20%">Игрок</th>
-            <th>Вход</th>
-            <th style="width: 20%">Выход</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>#</td>
-            <td>
-                <img src="/Images/img1.jpg" style="width: 15%;" alt="img">
-                <a>Гусев Алексей Николаевич</a>
-            </td>
-            <td>
-                <ul class="list-inline">
-                    <li class="btn btn-default">
-                        <strong style="color: #5a738e;">1000</strong> <br>
-                        <small style="color: #73879C;">22:30</small>
+﻿@using Bulka.Models
+@model Bulka.Models.GameProcessModel
+
+<div class="row">
+    <div class="col-md-4 col-sm-4 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Выбери действие <small></small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                     </li>
-                    <li class="btn btn-default">
-                        <strong style="color: #5a738e;">2000</strong> <br>
-                        <small style="color: #73879C;">23:30</small>
-                    </li>
-                    <li class="btn btn-default">
-                        <strong style="color: #5a738e;">10000</strong> <br>
-                        <small style="color: #73879C;">01:30</small>
-                    </li>
-                    <li class="">
-                        <a><span class="fa fa-plus"></span></a>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
                     </li>
                 </ul>
-            </td>
-            <td>
-                <li class="btn btn-default">
-                    <strong style="color: #5a738e;">100000</strong> <br>
-                    <small style="color: #73879C;">0:30</small>
-                </li>
-            </td>
-        </tr>
-        <tr>
-            <td>#</td>
-            <td>
-                <img src="/Images/img2.jpg" style="width: 15%;" alt="img">
-                <a>Ирина Киселёва</a>
-            </td>
-            <td>
-                <ul class="list-inline">
-                    <li class="btn btn-default">
-                        <strong style="color: #5a738e;">1000</strong> <br>
-                        <small style="color: #73879C;">22:30</small>
-                    </li>
-                    <li class="btn btn-default">
-                        <strong style="color: #5a738e;">2000</strong> <br>
-                        <small style="color: #73879C;">23:30</small>
-                    </li>
-                    <li class="btn btn-default">
-                        <strong style="color: #5a738e;">10000</strong> <br>
-                        <small style="color: #73879C;">01:30</small>
-                    </li>
-                    <li class="btn btn-default">
-                        <strong style="color: #5a738e;">10000</strong> <br>
-                        <small style="color: #73879C;">01:30</small>
-                    </li>
-                    <li class="">
-                        <a><span class="fa fa-plus"></span></a>
-                    </li>
-                </ul>
-            </td>
-            <td>
-                <li class="btn btn-default">
-                    <strong style="color: #5a738e;">100000</strong> <br>
-                    <small style="color: #73879C;">0:30</small>
-                </li>
-            </td>
-        </tr>
-    <tr>
-        <td>#</td>
-        <td>
-            <img src="/Images/img3.jpg" style="width: 15%;" alt="img">
-            <a>Александр Дормачёв</a>
-        </td>
-        <td>
-            <ul class="list-inline">
-                <li class="btn btn-default">
-                    <strong style="color: #5a738e;">1000</strong> <br>
-                    <small style="color: #73879C;">22:30</small>
-                </li>
-                <li class="btn btn-default">
-                    <strong style="color: #5a738e;">2000</strong> <br>
-                    <small style="color: #73879C;">23:30</small>
-                </li>
-                <li class="">
-                    <a><span class="fa fa-plus"></span></a>
-                </li>
-            </ul>
-        </td>
-        <td>
-            <li class="btn btn-default">
-                <strong style="color: #5a738e;">100000</strong> <br>
-                <small style="color: #73879C;">0:30</small>
-            </li>
-        </td>
-    </tr>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br>
+@using (Html.BeginForm("Action", "GameProcess", FormMethod.Post, new {role = "form", @class = "form-label-left"}))
+{
+    @Html.AntiForgeryToken()
 
-    <tr>
-        <td>#</td>
-        <td>
-            <img src="/Images/img4.jpg" style="width: 15%;" alt="img">
-            <a>Вячеслав Воронцов</a>
-        </td>
-        <td>
-            <ul class="list-inline">
-                <li class="btn btn-default">
-                    <strong style="color: #5a738e;">1000</strong> <br>
-                    <small style="color: #73879C;">22:30</small>
-                </li>
-                <li class="btn btn-default">
-                    <strong style="color: #5a738e;">2000</strong> <br>
-                    <small style="color: #73879C;">23:30</small>
-                </li>
-                <li class="btn btn-default">
-                    <strong style="color: #5a738e;">10000</strong> <br>
-                    <small style="color: #73879C;">01:30</small>
-                </li>
-                <li class="">
-                    <a><span class="fa fa-plus"></span></a>
-                </li>
-            </ul>
-        </td>
-        <td>
-            <li class="btn btn-default">
-                <strong style="color: #5a738e;">100000</strong> <br>
-                <small style="color: #73879C;">0:30</small>
-            </li>
-        </td>
-    </tr>
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+        @Html.HiddenFor(model => model.EditModel.GameProcessId)
 
-    </tbody>
-</table>
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                Игрок <span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                @Html.DropDownListFor(model => model.EditModel.PlayerId, Model.Players, null, htmlAttributes: new {@class = "form-control col-md-7 col-xs-12"})
+                @Html.ValidationMessageFor(model => model.EditModel.PlayerId, "", new {@class = "text-danger"})
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                Сумма <span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                @Html.TextBoxFor(model => model.EditModel.Amount, null, htmlAttributes: new {@class = "form-control col-md-7 col-xs-12"})
+                @Html.ValidationMessageFor(model => model.EditModel.Amount, "", new {@class = "text-danger"})
+            </div>
+        </div>
+        <div class="ln_solid"></div>
+        <div class="form-group">
+            <div class="col-md-12 col-sm-12 col-xs-12 ">
+                <button class="btn btn-primary" type="submit" name="EditModel.Type" value="@ActionType.SeatOut">
+                    <span class="glyphicon glyphicon-minus"></span>
+                    Выкупить
+                </button>
+                <button class="btn btn-primary" type="submit" name="EditModel.Type" value="@ActionType.Seat">
+                    <span class="glyphicon glyphicon-pencil"></span>    Посадить
+                </button>
+                <button type="submit" class="btn btn-success" name="EditModel.Type" value="@ActionType.Rebuy">
+                    <span class="glyphicon glyphicon-plus"></span> Докупить
+                </button>
+            </div>
+        </div>
+    </div>
+}
+    </div>
+        </div>
+    </div>
+    <div class="col-md-8 col-sm-8 col-xs-12">
+        <table class="table  projects">
+            <thead>
+            <tr>
+                <th style="width: 1%">#</th>
+                <th style="width: 20%">Игрок</th>
+                <th>Вход</th>
+                <th style="width: 20%">Выход</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>#</td>
+                <td>
+                    <img src="/Images/img1.jpg" style="width: 15%;" alt="img">
+                    <a>Гусев Алексей Николаевич</a>
+                </td>
+                <td>
+                    <ul class="list-inline">
+                        <li class="btn btn-default">
+                            <strong style="color: #5a738e;">1000</strong> <br>
+                            <small style="color: #73879C;">22:30</small>
+                        </li>
+                        <li class="btn btn-default">
+                            <strong style="color: #5a738e;">2000</strong> <br>
+                            <small style="color: #73879C;">23:30</small>
+                        </li>
+                        <li class="btn btn-default">
+                            <strong style="color: #5a738e;">10000</strong> <br>
+                            <small style="color: #73879C;">01:30</small>
+                        </li>
+                        <li class="">
+                            <a><span class="fa fa-plus"></span></a>
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    <li class="btn btn-default">
+                        <strong style="color: #5a738e;">100000</strong> <br>
+                        <small style="color: #73879C;">0:30</small>
+                    </li>
+                </td>
+            </tr>
+            <tr>
+                <td>#</td>
+                <td>
+                    <img src="/Images/img2.jpg" style="width: 15%;" alt="img">
+                    <a>Ирина Киселёва</a>
+                </td>
+                <td>
+                    <ul class="list-inline">
+                        <li class="btn btn-default">
+                            <strong style="color: #5a738e;">1000</strong> <br>
+                            <small style="color: #73879C;">22:30</small>
+                        </li>
+                        <li class="btn btn-default">
+                            <strong style="color: #5a738e;">2000</strong> <br>
+                            <small style="color: #73879C;">23:30</small>
+                        </li>
+                        <li class="btn btn-default">
+                            <strong style="color: #5a738e;">10000</strong> <br>
+                            <small style="color: #73879C;">01:30</small>
+                        </li>
+                        <li class="btn btn-default">
+                            <strong style="color: #5a738e;">10000</strong> <br>
+                            <small style="color: #73879C;">01:30</small>
+                        </li>
+                        <li class="">
+                            <a><span class="fa fa-plus"></span></a>
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    <li class="btn btn-default">
+                        <strong style="color: #5a738e;">100000</strong> <br>
+                        <small style="color: #73879C;">0:30</small>
+                    </li>
+                </td>
+            </tr>
+            <tr>
+                <td>#</td>
+                <td>
+                    <img src="/Images/img3.jpg" style="width: 15%;" alt="img">
+                    <a>Александр Дормачёв</a>
+                </td>
+                <td>
+                    <ul class="list-inline">
+                        <li class="btn btn-default">
+                            <strong style="color: #5a738e;">1000</strong> <br>
+                            <small style="color: #73879C;">22:30</small>
+                        </li>
+                        <li class="btn btn-default">
+                            <strong style="color: #5a738e;">2000</strong> <br>
+                            <small style="color: #73879C;">23:30</small>
+                        </li>
+                        <li class="">
+                            <a><span class="fa fa-plus"></span></a>
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    <li class="btn btn-default">
+                        <strong style="color: #5a738e;">100000</strong> <br>
+                        <small style="color: #73879C;">0:30</small>
+                    </li>
+                </td>
+            </tr>
+
+            <tr>
+                <td>#</td>
+                <td>
+                    <img src="/Images/img4.jpg" style="width: 15%;" alt="img">
+                    <a>Вячеслав Воронцов</a>
+                </td>
+                <td>
+                    <ul class="list-inline">
+                        <li class="btn btn-default">
+                            <strong style="color: #5a738e;">1000</strong> <br>
+                            <small style="color: #73879C;">22:30</small>
+                        </li>
+                        <li class="btn btn-default">
+                            <strong style="color: #5a738e;">2000</strong> <br>
+                            <small style="color: #73879C;">23:30</small>
+                        </li>
+                        <li class="btn btn-default">
+                            <strong style="color: #5a738e;">10000</strong> <br>
+                            <small style="color: #73879C;">01:30</small>
+                        </li>
+                        <li class="">
+                            <a><span class="fa fa-plus"></span></a>
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    <li class="btn btn-default">
+                        <strong style="color: #5a738e;">100000</strong> <br>
+                        <small style="color: #73879C;">0:30</small>
+                    </li>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+

@@ -95,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BulkaContexTest.cs" />
+    <Compile Include="GameProcessTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
   </ItemGroup>
@@ -116,6 +117,10 @@
     <ProjectReference Include="..\Bulka.Repository\Bulka.Repository.csproj">
       <Project>{64F1A16A-5308-4A1B-919F-A64ACB71823E}</Project>
       <Name>Bulka.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BulkaBussinessLogic\BulkaBussinessLogic.csproj">
+      <Project>{D20A4FAA-425E-42E3-BA31-5CD646637CD3}</Project>
+      <Name>BulkaBussinessLogic</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bulka\Bulka.csproj">
       <Project>{3236B4E1-8076-4F26-8B18-ED1AFDFA030A}</Project>

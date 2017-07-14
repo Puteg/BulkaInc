@@ -6,9 +6,9 @@ namespace BulkaBussinessLogic.Implementation
     {
         public bool Transfer(Account sender, Account recipient, decimal amount)
         {
-            sender.Balance = -amount;
-            recipient.Balance = +amount;
-
+            sender.Balance -= amount;
+            recipient.Balance += amount;
+            
             return true;
         }
     }

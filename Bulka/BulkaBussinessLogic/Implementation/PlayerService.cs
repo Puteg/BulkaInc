@@ -22,7 +22,7 @@ namespace BulkaBussinessLogic.Implementation
 
             var newPlayer = new Player()
             {
-                FirstName = firstName,
+                Name = firstName,
                 Phone = phone,
                 Account = newAccount
             };

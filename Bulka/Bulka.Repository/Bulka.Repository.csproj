@@ -52,6 +52,9 @@
   <ItemGroup>
     <Compile Include="BaseRepository.cs" />
     <Compile Include="IRepository.cs" />
+    <Compile Include="PaymentRepository.cs" />
+    <Compile Include="GameProcessRepository.cs" />
+    <Compile Include="ClubRepository.cs" />
     <Compile Include="PlayersRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

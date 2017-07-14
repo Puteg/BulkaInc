@@ -23,6 +23,7 @@ namespace BulkaBussinessLogic.Implementation
             contex.Accounts.Add(Account);
             contex.SaveChanges();
 
+            PaymentService = new PaymentService();
             GameProcess = new GameProcess { Club = club, AccountId = Account.Id };
         }
 
@@ -34,6 +35,7 @@ namespace BulkaBussinessLogic.Implementation
         public void StopProcess()
         {
             GameProcess.EndDateTime = DateTime.Now;
+            Contex.SaveChanges();
         }
 
         public bool Seat(Player player, decimal amount)

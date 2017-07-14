@@ -18,7 +18,10 @@ namespace Bulka.Models
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
 
-            userIdentity.AddClaim(new Claim("ImageUrl", this.ImageUrl));
+            if (!string.IsNullOrEmpty(ImageUrl))
+            {
+                userIdentity.AddClaim(new Claim("ImageUrl", this.ImageUrl));
+            }
 
             return userIdentity;
         }
