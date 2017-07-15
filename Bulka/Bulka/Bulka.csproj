@@ -203,8 +203,6 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\ActionEditModel.cs" />
-    <Compile Include="Models\GameProcessModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PlayerEditModel.cs" />
@@ -348,6 +346,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Player\Profile.cshtml" />
+    <Content Include="Views\GameProcess\Details.cshtml" />
+    <Content Include="Views\GameProcess\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -368,6 +368,10 @@
     <ProjectReference Include="..\Bulka.Repository\Bulka.Repository.csproj">
       <Project>{64F1A16A-5308-4A1B-919F-A64ACB71823E}</Project>
       <Name>Bulka.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BulkaBussinessLogic\BulkaBussinessLogic.csproj">
+      <Project>{D20A4FAA-425E-42E3-BA31-5CD646637CD3}</Project>
+      <Name>BulkaBussinessLogic</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

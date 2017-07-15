@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Bulka.Models
+﻿namespace BulkaBussinessLogic.Model.GameProcess
 {
     public class ActionEditModel
     {

@@ -1,0 +1,106 @@
+﻿@using BulkaBussinessLogic.Model.GameProcess
+@model GameProcessModel
+
+<div class="row">
+    <div class="col-md-4 col-sm-4 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Статистика <small></small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table projects">
+                    <thead>
+                        <tr>
+                            <th>Название</th>
+                            <th>Результат</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Количество играков</td>
+                            <td>@Model.PlayerCount</td>
+                        </tr>
+                        <tr>
+                            <td>Суммарный вход</td>
+                            <td>@Model.TotalInput</td>
+                        </tr>
+                        <tr>
+                            <td>Суммарный выход</td>
+                            <td>@Model.TotalOutput</td>
+                        </tr>
+                        <tr>
+                            <td>Разница</td>
+                            <td>@Model.Total</td>
+                        </tr>
+                        <tr>
+                            <td>Продолжительность</td>
+                            <td>@Model.DirationTime</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="ln_solid"></div>
+                <a href="@Url.Action("End","GameProcess", new { id = @Model.Id})" class="btn btn-success">
+                    Закончить процесс
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8 col-sm-8 col-xs-12">
+        <table class="table projects">
+            <thead>
+                <tr>
+                    <th style="width: 10%"></th>
+                    <th style="width: 20%">Игрок</th>
+                    <th>Вход</th>
+                    <th style="width: 20%">Выход</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>
+                            <img src="@item.PlayerImage" style="width: 100%;" alt="img">
+                        </td>
+                        <td>
+                            @item.PlayerName
+                        </td>
+                        <td>
+                            <ul class="list-inline">
+                                @foreach (var stuff in item.Input)
+                                {
+                                    <li class="btn btn-default">
+                                        <strong style="color: #5a738e;">@stuff.Amount</strong> <br>
+                                        <small style="color: #73879C;">@stuff.Time</small>
+                                    </li>
+                                }
+                            </ul>
+                        </td>
+                        <td>
+                            @if (item.OutPut != null)
+                            {
+                                <li class="btn btn-default">
+                                    <strong style="color: #5a738e;">@item.OutPut.Amount</strong> <br>
+                                    <small style="color: #73879C;">@item.OutPut.Time</small>
+                                </li>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+

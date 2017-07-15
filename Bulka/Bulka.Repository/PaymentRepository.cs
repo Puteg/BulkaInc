@@ -5,5 +5,14 @@ namespace Bulka.Repository
 {
     public class PaymentRepository : GenericRepository<BulkaContext, Payment>
     {
+        public PaymentRepository()
+        {
+
+        }
+
+        public PaymentRepository(BulkaContext context)
+        {
+            this.Context = context;
+        }
     }
 }

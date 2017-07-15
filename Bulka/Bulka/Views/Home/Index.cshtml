@@ -1,10 +1,64 @@
-﻿@{
-    ViewBag.Title = "Стартовая страница";
-    ViewBag.PageTitle = "Заголовок страницы";
-    ViewBag.PanelTitle = "Заголовок панели";    
-}
+﻿@model BulkaBussinessLogic.Model.GameProcess.GameProcessList
+    @{
+        ViewBag.Title = "Стартовая страница";
+        ViewBag.PageTitle = "Заголовок страницы";
+        ViewBag.PanelTitle = "Заголовок панели";
+    }
 
-<div class="jumbotron">
-    <h2> Это главная страница. </h2>
-    <h4> Скоро здесь появится полезная информация</h4>
+<div class="col-md-6 col-sm-6 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>
+                Список процесов <small></small>
+            </h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li>
+                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li>
+                    <a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Дата</th>
+                    <th>Кол-во играков</th>
+                    <th>Время</th>
+                    <th>Вход</th>
+                    <th>Выход</th>
+                    <th>Разница</th>
+                    <th>Действия</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.DateTime</td>
+                        <td>@item.PlayerCount</td>
+                        <td>@item.DirationTime</td>
+                        <td>@item.TotalInput</td>
+                        <td>@item.TotalOutput</td>
+                        <td>@item.Total</td>
+                        <td>
+                            <a href="@Url.Action("Edit","GameProcess", new {id = item.Id})" class="btn btn-default">
+                                Редактировать
+                            </a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+            <div class="ln_solid"></div>
+            <a href="@Url.Action("Create","GameProcess", new {clubId = 11})" class="btn btn-success">
+                Создать новый процесс
+            </a>
+        </div>
+    </div>
 </div>

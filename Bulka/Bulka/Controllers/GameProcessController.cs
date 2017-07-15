@@ -1,47 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Bulka.DataModel;
-using Bulka.Models;
-using Bulka.Repository;
+﻿using System.Web.Mvc;
+using Bulka.DataAccess;
+using BulkaBussinessLogic.Implementation;
+using BulkaBussinessLogic.Model.GameProcess;
 
 namespace Bulka.Controllers
 {
     public class GameProcessController : Controller
     {
-        private readonly GameProcess _gameProcess;
-        private readonly PlayersRepository _playersRepository;
-        private readonly PaymentRepository _paymentRepository;
+        private readonly GameProcessService _service;
 
         public GameProcessController()
         {
-            var gameProcessRepository = new GameProcessRepository();
-
-            _gameProcess = gameProcessRepository.GetAll().FirstOrDefault();
-            if (_gameProcess == null)
-            {
-                _gameProcess = new GameProcess();
-                gameProcessRepository.Add(_gameProcess);
-                gameProcessRepository.Save();
-            }
-            
-            _playersRepository = new PlayersRepository();
-            _paymentRepository = new PaymentRepository();
-        }
-
-        // GET: GameProcess
-        public ActionResult Index(int id)
-        {
-            var player = _playersRepository.GetAll().ToList();
-
-            var vm = new GameProcessModel()
-            {
-                EditModel = new ActionEditModel(){ GameProcessId = id },
-                Players = player.Select(c => new SelectListItem(){Text = c.Name, Value = c.Id.ToString()}).ToList()
-            };
-            return View(vm);
+            _service = new GameProcessService(new BulkaContext());
         }
 
         [HttpPost]
@@ -51,39 +21,48 @@ namespace Bulka.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    Payment payment = null;
-                    var player = _playersRepository.FindBy(c => c.Id == model.PlayerId).First();
 
                     switch (model.Type)
                     {
                         case ActionType.Seat:
+                            _service.Seat(model.PlayerId, model.Amount, model.GameProcessId);
+                            break;
                         case ActionType.Rebuy:
-
-                            payment = new Payment
-                            {
-                                CreateDateTime = DateTime.Now,
-                                Amount = model.Amount,
-                                RecipientAccountId = _gameProcess.AccountId,
-                                SenderAccountId = player.AccountId
-                            };
-
+                            _service.Rebuy(model.PlayerId, model.Amount, model.GameProcessId);
                             break;
                         case ActionType.SeatOut:
-                            payment = new Payment
-                            {
-                                CreateDateTime = DateTime.Now,
-                                Amount = model.Amount,
-                                RecipientAccountId = player.AccountId,
-                                SenderAccountId = _gameProcess.AccountId,
-                            };
+                            _service.SeatOut(model.PlayerId, model.Amount, model.GameProcessId);
                             break;
                     }
-                    _paymentRepository.Add(payment);
-                    _paymentRepository.Save();
                 }
             }
 
             return RedirectToAction("Index", new { id = model.GameProcessId });
+        }
+
+        public ActionResult Details(int id)
+        {
+            var vm = _service.Edit(id);
+            return View(vm);
+        }
+
+        public ActionResult Edit(int id)
+        {
+            var vm = _service.Edit(id);
+            return View(vm);
+        }
+
+        public ActionResult Create(int clubId)
+        {
+            var gameProcess = _service.Create(clubId);
+            return RedirectToAction("Edit", new { id = gameProcess.Id });
+        }
+
+        public ActionResult End(int id)
+        {
+            _service.StopProcess(id);
+
+            return RedirectToAction("Details", new { id = id });
         }
     }
 }

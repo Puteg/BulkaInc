@@ -12,9 +12,10 @@ namespace Bulka.DataModel
         public int ClubId { get; set; }
         public Guid AccountId { get; set; }
 
-        public DateTime StartDateTime { get; set; }
-        public DateTime EndDateTime { get; set; }
+        public DateTime? StartDateTime { get; set; }
+        public DateTime? EndDateTime { get; set; }
 
+        public virtual Account Account { get; set; }
         public virtual Club Club { get; set; }
         public virtual List<Payment> Payments { get; set; }
     }

@@ -9,6 +9,6 @@ namespace BulkaBussinessLogic
 {
     public interface IPaymentService
     {
-        bool Transfer(Account sender, Account recipient, decimal amount);
+        bool Transfer(Account sender, Account recipient, decimal amount, int? gameProcessId = null, Player senderPlayer = null, Player recipientPlayer = null);
     }
 }

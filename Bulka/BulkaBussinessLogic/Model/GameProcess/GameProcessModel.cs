@@ -1,11 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 
-namespace Bulka.Models
+namespace BulkaBussinessLogic.Model.GameProcess
 {
     public class GameProcessModel
     {
+        public GameProcessModel()
+        {
+            Items = new List<GameProcessItem>();
+            Players = new List<SelectListItem>();
+        }
+
         public int Id { get; set; }
+
+        public int PlayerCount { get; set; }
+        public decimal TotalInput { get; set; }
+        public decimal TotalOutput { get; set; }
+        public decimal Total { get; set; }
+        public string DirationTime { get; set; }
 
         public List<GameProcessItem> Items { get; set; }
         public List<SelectListItem> Players { get; set; }
@@ -15,6 +27,11 @@ namespace Bulka.Models
 
     public class GameProcessItem
     {
+        public GameProcessItem()
+        {
+            Input = new List<PlayerStuff>();
+        }
+
         public string PlayerName;
         public string PlayerImage;
 
@@ -24,7 +41,7 @@ namespace Bulka.Models
 
     public class PlayerStuff
     {
-        public string Amout { get; set; }
+        public decimal Amount { get; set; }
         public string Time { get; set; }
     }
 }
