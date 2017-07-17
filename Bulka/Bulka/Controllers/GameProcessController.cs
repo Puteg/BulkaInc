@@ -37,7 +37,7 @@ namespace Bulka.Controllers
                 }
             }
 
-            return RedirectToAction("Index", new { id = model.GameProcessId });
+            return RedirectToAction("Edit", new { id = model.GameProcessId });
         }
 
         public ActionResult Details(int id)

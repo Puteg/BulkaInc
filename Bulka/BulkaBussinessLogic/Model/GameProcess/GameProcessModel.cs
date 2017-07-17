@@ -14,9 +14,9 @@ namespace BulkaBussinessLogic.Model.GameProcess
         public int Id { get; set; }
 
         public int PlayerCount { get; set; }
-        public decimal TotalInput { get; set; }
-        public decimal TotalOutput { get; set; }
-        public decimal Total { get; set; }
+        public string TotalInput { get; set; }
+        public string TotalOutput { get; set; }
+        public string Total { get; set; }
         public string DirationTime { get; set; }
 
         public List<GameProcessItem> Items { get; set; }

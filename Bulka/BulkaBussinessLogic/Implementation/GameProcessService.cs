@@ -79,15 +79,22 @@ namespace BulkaBussinessLogic.Implementation
 
             var totalInput = gameProcessItems.SelectMany(c => c.Input.Select(i => i.Amount).ToList()).Sum();
             var totalOutput = gameProcessItems.Where(c => c.OutPut != null).Select(c => c.OutPut.Amount).Sum();
+
+            TimeSpan subtract;
+            subtract = !gameProcess.EndDateTime.HasValue
+                ? DateTime.Now.Subtract(gameProcess.StartDateTime.GetValueOrDefault())
+                : gameProcess.EndDateTime.Value.Subtract(gameProcess.StartDateTime.GetValueOrDefault());
+            var dirationTimeStr = string.Format("{0} ч. {1} мин.", (int)subtract.TotalHours, subtract.Minutes);
+
             var vm = new GameProcessModel()
             {
                 Items = gameProcessItems,
 
-                DirationTime = DateTime.Now.Subtract(gameProcess.StartDateTime.GetValueOrDefault()).ToString(),
+                DirationTime = dirationTimeStr,
                 PlayerCount = gameProcessItems.Count,
-                TotalInput = totalInput,
-                TotalOutput = totalOutput,
-                Total = totalInput - totalOutput,
+                TotalInput = totalInput.ToString("0.##"),
+                TotalOutput = totalOutput.ToString("0.##"),
+                Total = (totalInput - totalOutput).ToString("0.##"),
 
                 Id = id,
                 EditModel = new ActionEditModel() {GameProcessId = id},
@@ -132,57 +139,74 @@ namespace BulkaBussinessLogic.Implementation
             return true;
         }
 
-        public GameProcessList GetAll()
+        public ClubList GetAll()
         {
-            var list = new GameProcessList();
+            var clubs = _clubRepository.GetAll().ToList();
+            var gameProcessList = new ClubList();
 
-            var gameProcesses = _gameProcessRepository.GetAll().ToList();
-
-            foreach (var gameProcess in gameProcesses)
+            foreach (var club in clubs)
             {
-                var gameProcessItems = gameProcess.Payments.Where(c => c.Sender != null).GroupBy(c => c.Sender).Select(c =>
+                var clubItem = new ClubItem()
                 {
-                    var gameprocess = new GameProcessItem()
-                    {
-                        PlayerName = c.Key.Name,
-                        PlayerImage = c.Key.ImageUrl,
-                        Input = c.Select(i => new PlayerStuff()
-                        {
-                            Amount = i.Amount,
-                            Time = i.CreateDateTime.ToShortTimeString()
-                        }).ToList(),
-                    };
-
-                    var output = gameProcess.Payments.FirstOrDefault(p => p.Recipient != null && p.Recipient.Id == c.Key.Id);
-                    if (output != null)
-                    {
-                        gameprocess.OutPut = new PlayerStuff()
-                        {
-                            Amount = output.Amount,
-                            Time = output.CreateDateTime.ToShortTimeString()
-                        };
-                    }
-
-                    return gameprocess;
-                }).ToList();
-
-                var totalInput = gameProcessItems.SelectMany(c => c.Input.Select(i => i.Amount).ToList()).Sum();
-                var totalOutput = gameProcessItems.Where(c => c.OutPut != null).Select(c => c.OutPut.Amount).Sum();
-
-                var item = new GameProcessListItem()
-                {
-                    Id = gameProcess.Id,
-                    DateTime = gameProcess.StartDateTime.GetValueOrDefault().ToShortDateString(),
-                    DirationTime = DateTime.Now.Subtract(gameProcess.StartDateTime.GetValueOrDefault()).TotalMinutes.ToString(),
-                    PlayerCount = gameProcessItems.Count,
-                    TotalInput = totalInput,
-                    TotalOutput = totalOutput,
-                    Total = totalInput - totalOutput,
+                    Id = club.Id,
+                    Name = club.Name
                 };
-                list.Items.Add(item);
+
+                var gameProcesses = _gameProcessRepository.GetAll().Where(c => c.ClubId == club.Id).ToList();
+
+                foreach (var gameProcess in gameProcesses)
+                {
+                    var gameProcessItems = gameProcess.Payments.Where(c => c.Sender != null).GroupBy(c => c.Sender).Select(c =>
+                    {
+                        var gameprocess = new GameProcessItem()
+                        {
+                            PlayerName = c.Key.Name,
+                            PlayerImage = c.Key.ImageUrl,
+                            Input = c.Select(i => new PlayerStuff()
+                            {
+                                Amount = i.Amount,
+                                Time = i.CreateDateTime.ToShortTimeString()
+                            }).ToList(),
+                        };
+
+                        var output = gameProcess.Payments.FirstOrDefault(p => p.Recipient != null && p.Recipient.Id == c.Key.Id);
+                        if (output != null)
+                        {
+                            gameprocess.OutPut = new PlayerStuff()
+                            {
+                                Amount = output.Amount,
+                                Time = output.CreateDateTime.ToShortTimeString()
+                            };
+                        }
+
+                        return gameprocess;
+                    }).ToList();
+
+                    var totalInput = gameProcessItems.SelectMany(c => c.Input.Select(i => i.Amount).ToList()).Sum();
+                    var totalOutput = gameProcessItems.Where(c => c.OutPut != null).Select(c => c.OutPut.Amount).Sum();
+
+                    TimeSpan subtract;
+                    subtract = !gameProcess.EndDateTime.HasValue
+                        ? DateTime.Now.Subtract(gameProcess.StartDateTime.GetValueOrDefault())
+                        : gameProcess.EndDateTime.Value.Subtract(gameProcess.StartDateTime.GetValueOrDefault());
+                    var dirationTimeStr = string.Format("{0} ч. {1} мин.", (int)subtract.TotalHours, subtract.Minutes);
+
+                    var item = new GameProcessListItem()
+                    {
+                        Id = gameProcess.Id,
+                        DateTime = gameProcess.StartDateTime.GetValueOrDefault().ToShortDateString(),
+                        DirationTime = dirationTimeStr,
+                        PlayerCount = gameProcessItems.Count,
+                        TotalInput = totalInput.ToString("0.##"),
+                        TotalOutput = totalOutput.ToString("0.##"),
+                        Total = (totalInput - totalOutput).ToString("0.##"),
+                    };
+                    clubItem.Items.Add(item);
+                }
+                gameProcessList.Clubs.Add(clubItem);
             }
 
-            return list;
+            return gameProcessList;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Data.Entity;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -18,10 +17,9 @@ namespace Bulka.Models
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
 
-            if (!string.IsNullOrEmpty(ImageUrl))
-            {
-                userIdentity.AddClaim(new Claim("ImageUrl", this.ImageUrl));
-            }
+            userIdentity.AddClaim(!string.IsNullOrEmpty(ImageUrl) 
+                ? new Claim("ImageUrl", ImageUrl) 
+                : new Claim("ImageUrl", "/images/user.png"));
 
             return userIdentity;
         }

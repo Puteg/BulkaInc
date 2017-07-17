@@ -141,7 +141,7 @@
                                 @foreach (var stuff in item.Input)
                                 {
                                     <li class="btn btn-default">
-                                        <strong style="color: #5a738e;">@stuff.Amount</strong> <br>
+                                        <strong style="color: #5a738e;">@stuff.Amount.ToString("0.##")</strong> <br>
                                         <small style="color: #73879C;">@stuff.Time</small>
                                     </li>
                                 }
@@ -151,7 +151,7 @@
                             @if (item.OutPut != null)
                             {
                                 <li class="btn btn-default">
-                                    <strong style="color: #5a738e;">@item.OutPut.Amount</strong> <br>
+                                    <strong style="color: #5a738e;">@item.OutPut.Amount.ToString("0.##")</strong> <br>
                                     <small style="color: #73879C;">@item.OutPut.Time</small>
                                 </li>
                             }

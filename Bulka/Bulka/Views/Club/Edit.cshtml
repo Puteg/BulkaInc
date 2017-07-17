@@ -1,0 +1,36 @@
+﻿@model BulkaBussinessLogic.Model.Club.ClubEdit
+
+@{
+    ViewBag.Title = "Клубы";
+    ViewBag.PageTitle = "Клубы";
+    ViewBag.PanelTitle = "Редактирование";
+}
+
+@using (Html.BeginForm("Edit", "Club", FormMethod.Post, new { role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="col-md-8 col-sm-8 col-xs-12">
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                    Название <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    @Html.TextBoxFor(model => model.Name, null, htmlAttributes: new {@class = "form-control col-md-7 col-xs-12"})
+                    @Html.ValidationMessageFor(model => model.Name, "", new {@class = "text-danger"})
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="col-md-6 col-md-offset-3">
+                    <button type="reset" class="btn btn-primary">Отменить</button>
+                    <button id="send" type="submit" class="btn btn-success">Cохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

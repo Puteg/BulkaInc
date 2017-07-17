@@ -32,7 +32,7 @@ namespace Bulka.Controllers
         [HttpGet]
         public ActionResult New()
         {
-            return View("Edit", new PlayerEditModel());
+            return View("Edit", new PlayerEditModel(){ImageUrl = "/images/user.png"});
         }
 
         [HttpGet]
