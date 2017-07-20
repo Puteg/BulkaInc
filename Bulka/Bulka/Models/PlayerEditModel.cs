@@ -6,6 +6,7 @@ namespace Bulka.Models
     {
         public int Id { get; set; }
 
+        [Display(Name = "Фото")]
         public string ImageUrl { get; set; }
 
         [Display(Name = "Имя")]

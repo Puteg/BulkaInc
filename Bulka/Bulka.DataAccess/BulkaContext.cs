@@ -1,5 +1,4 @@
 ﻿using System.Data.Entity;
-using Bulka.DataAccess.Migrations;
 using Bulka.DataModel;
 
 namespace Bulka.DataAccess
@@ -9,7 +8,7 @@ namespace Bulka.DataAccess
         public BulkaContext()
             : base("BulkaContext")
         {
-            //Database.SetInitializer(new Configuration());
+            Database.SetInitializer(new NullDatabaseInitializer<BulkaContext>());
         }
 
         public DbSet<Player> Players { get; set; }
@@ -18,5 +17,11 @@ namespace Bulka.DataAccess
         public DbSet<GameProcess> GameProcess { get; set; }
         public DbSet<Account> Accounts { get; set; } 
         public DbSet<PlayerSession> PlayerSessions { get; set; }
+        public DbSet<Profile> Profiles { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Profile>().ToTable("dbo.AspNetUsers");
+        }
     }
 }

@@ -56,6 +56,7 @@
     <Compile Include="GameProcessRepository.cs" />
     <Compile Include="ClubRepository.cs" />
     <Compile Include="PlayersRepository.cs" />
+    <Compile Include="ProfileRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

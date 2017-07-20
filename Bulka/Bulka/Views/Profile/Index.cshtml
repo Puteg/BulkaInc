@@ -1,0 +1,27 @@
+﻿@model BulkaBussinessLogic.Model.Profile.ProfileModel
+
+
+<div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+    <div class="profile_img">
+        <div id="crop-avatar">
+            <!-- Current avatar -->
+            <img class="img-responsive avatar-view" src="@Model.ImageUrl" alt="Avatar" title="Change the avatar">
+        </div>
+    </div>
+    <h3>@Model.Login</h3>
+
+    <ul class="list-unstyled user_data">
+        <li>
+            <i class="fa fa-map-marker user-profile-icon"></i> @Model.Phone
+        </li>
+
+        <li>
+            <i class="fa fa-briefcase user-profile-icon"></i> @Model.Email
+        </li>
+
+    </ul>
+
+    <a href="@Url.Action("Edit", "Profile")" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Редактировать</a>
+    <br>
+</div>
+
