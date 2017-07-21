@@ -75,6 +75,7 @@
     <Compile Include="Implementation\GameProcessService.cs" />
     <Compile Include="Implementation\PaymentService.cs" />
     <Compile Include="Implementation\PlayerService.cs" />
+    <Compile Include="Implementation\PlayerSessionService.cs" />
     <Compile Include="Implementation\ProfileService.cs" />
     <Compile Include="IPaymentService.cs" />
     <Compile Include="IPlayerService.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Model\GameProcess\ActionEditModel.cs" />
     <Compile Include="Model\GameProcess\ClubList.cs" />
     <Compile Include="Model\GameProcess\GameProcessModel.cs" />
+    <Compile Include="Model\GameProcess\TestGameProcessResquest.cs" />
     <Compile Include="Model\Profile\ProfileEdit.cs" />
     <Compile Include="Model\Profile\ProfileModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

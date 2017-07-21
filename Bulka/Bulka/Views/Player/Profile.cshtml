@@ -1,4 +1,10 @@
-﻿@model Bulka.DataModel.Player
+﻿@model Bulka.Models.Player.PlayerProfileViewModel
+
+@{
+    ViewBag.Title = "Информация профиля";
+    ViewBag.PageTitle = Model.Name;
+    ViewBag.PanelTitle = "Просмотр";
+}
 
 <div class="x_content">
     <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
@@ -29,8 +35,8 @@
             </li>
         </ul>
 
-        <a href="/Player/Edit/@Model.Id" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Редактировать</a>
-        <br>
+        <a href="@Url.Action("Edit", "Player", new { id = @Model.Id })" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Редактировать</a>
+        <a href="@Url.Action("All", "Player", new { id = @Model.Id })" class="btn btn-default"><i class="fa fa-edit m-right-xs"></i>Назад к списку</a>
 
     </div>
     <div class="col-md-9 col-sm-9 col-xs-12">
@@ -40,60 +46,73 @@
                 <li role="presentation" class="active">
                     <a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Последние игры</a>
                 </li>
+                @foreach (var tab in Model.Grouping)
+                {
+                    <li role="presentation">
+                        <a href="#@Model.Grouping.IndexOf(tab)" id="home-@Model.Grouping.IndexOf(tab)" role="tab" data-toggle="tab" aria-expanded="true">@tab.Key</a>
+                    </li>
+                }
             </ul>
             <div id="myTabContent" class="tab-content">
                 <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
-
-                    <!-- start user projects -->
                     <table class="data table table-striped no-margin">
                         <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Дата</th>
-                                <th>Клуб</th>
-                                <th>Продолжительность</th>
-                                <th>Вход</th>
-                                <th>Выход</th>
-                            </tr>
+                        <tr>
+                            <th>Дата</th>
+                            <th>Клуб</th>
+                            <th>Продолжительность</th>
+                            <th>Вход</th>
+                            <th>Выход</th>
+                        </tr>
                         </thead>
                         <tbody>
+                        @foreach (var item in Model.PlayerSessionList)
+                        {
                             <tr>
-                                <td>1</td>
-                                <td>01.07.2017</td>
-                                <td>Таганка</td>
-                                <td>2</td>
-                                <td>5000</td>
-                                <td>10000</td>
+                                <td>@item.DateTime</td>
+                                <td>@item.ClubName</td>
+                                <td>@item.Duration</td>
+                                <td>@item.Input</td>
+                                <td>@item.Output</td>
                             </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>02.07.2017</td>
-                                <td>Таганка</td>
-                                <td>3</td>
-                                <td>1000</td>
-                                <td>50000</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>02.07.2017</td>
-                                <td>Таганка</td>
-                                <td>3</td>
-                                <td>1000</td>
-                                <td>50000</td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>02.07.2017</td>
-                                <td>Таганка</td>
-                                <td>3</td>
-                                <td>1000</td>
-                                <td>50000</td>
-                            </tr>
+                        }
                         </tbody>
                     </table>
 
                 </div>
             </div>
+
+            @foreach (var tab in Model.Grouping)
+            {
+                <div id="myTabContent @Model.Grouping.IndexOf(tab)" class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade" id="@Model.Grouping.IndexOf(tab)" aria-labelledby="home-@Model.Grouping.IndexOf(tab)">
+                        <table class="data table table-striped no-margin">
+                            <thead>
+                                <tr>
+                                    <th>Дата</th>
+                                    <th>Клуб</th>
+                                    <th>Продолжительность</th>
+                                    <th>Вход</th>
+                                    <th>Выход</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in tab.ToList())
+                                {
+                                    <tr>
+                                        <td>@item.DateTime</td>
+                                        <td>@item.ClubName</td>
+                                        <td>@item.Duration</td>
+                                        <td>@item.Input</td>
+                                        <td>@item.Output</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </div>

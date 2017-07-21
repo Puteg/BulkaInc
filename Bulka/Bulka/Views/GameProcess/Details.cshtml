@@ -70,7 +70,9 @@
                 {
                     <tr>
                         <td>
-                            <img src="@item.PlayerImage" style="width: 100%;" alt="img">
+                            <a href="@Url.Action("Profile", "Player", new {id = @item.PlayerId})">
+                                <img src="@item.PlayerImage" style="width: 100%;" alt="img">
+                            </a>
                         </td>
                         <td>
                             @item.PlayerName
@@ -81,7 +83,7 @@
                                 {
                                     <li class="btn btn-default">
                                         <strong style="color: #5a738e;">@stuff.Amount</strong> <br>
-                                        <small style="color: #73879C;">@stuff.Time</small>
+                                        <small style="color: #73879C;">@stuff.Time.ToShortTimeString()</small>
                                     </li>
                                 }
                             </ul>
@@ -91,7 +93,7 @@
                             {
                                 <li class="btn btn-default">
                                     <strong style="color: #5a738e;">@item.OutPut.Amount</strong> <br>
-                                    <small style="color: #73879C;">@item.OutPut.Time</small>
+                                    <small style="color: #73879C;">@item.OutPut.Time.ToShortTimeString()</small>
                                 </li>
                             }
                         </td>

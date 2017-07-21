@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace BulkaBussinessLogic.Model.GameProcess
@@ -32,6 +33,7 @@ namespace BulkaBussinessLogic.Model.GameProcess
             Input = new List<PlayerStuff>();
         }
 
+        public int PlayerId;
         public string PlayerName;
         public string PlayerImage;
 
@@ -42,6 +44,6 @@ namespace BulkaBussinessLogic.Model.GameProcess
     public class PlayerStuff
     {
         public decimal Amount { get; set; }
-        public string Time { get; set; }
+        public DateTime Time { get; set; }
     }
 }

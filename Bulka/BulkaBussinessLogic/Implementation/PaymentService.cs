@@ -7,10 +7,14 @@ namespace BulkaBussinessLogic.Implementation
     public class PaymentService : IPaymentService
     {
         private readonly PaymentRepository _paymentRepository;
+        
+        public DateTime DateTime { get; set; }
 
         public PaymentService(PaymentRepository paymentRepository)
         {
             _paymentRepository = paymentRepository;
+
+            DateTime = DateTime.Now;
         }
 
         public bool Transfer(Account sender, Account recipient, decimal amount, int? gameProcessId = null, Player senderPlayer = null, Player recipientPlayer = null)
@@ -20,7 +24,7 @@ namespace BulkaBussinessLogic.Implementation
 
             var payment = new Payment
             {
-                CreateDateTime = DateTime.Now,
+                CreateDateTime = DateTime,
                 Amount = amount,
                 RecipientAccountId = recipient.Id,
                 SenderAccountId = sender.Id,

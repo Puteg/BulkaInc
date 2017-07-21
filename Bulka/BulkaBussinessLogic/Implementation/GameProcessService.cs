@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Bulka.DataAccess;
@@ -10,23 +11,25 @@ namespace BulkaBussinessLogic.Implementation
 {
     public class GameProcessService : IGameProcessService
     {
-        private BulkaContext Context { get; set; }
         private PaymentService PaymentService { get; set; }
+        private PlayerSessionService PlayerSessionService { get; set; }
 
         private readonly PlayersRepository _playersRepository;
         private readonly GameProcessRepository _gameProcessRepository;
         private readonly ClubRepository _clubRepository;
 
-        
+        public DateTime DateTime { get; set; }
+
         public GameProcessService(BulkaContext context)
         {
-            Context = context;
-
-             _gameProcessRepository = new GameProcessRepository(context);
+            _gameProcessRepository = new GameProcessRepository(context);
             _playersRepository = new PlayersRepository(context);
             _clubRepository = new ClubRepository(context);
 
             PaymentService = new PaymentService(new PaymentRepository(context));
+            PlayerSessionService = new PlayerSessionService(context);
+
+            DateTime = DateTime.Now;
         }
 
         public GameProcess Create(int clubId)
@@ -35,7 +38,7 @@ namespace BulkaBussinessLogic.Implementation
             
             var gameProcess = new GameProcess()
             {
-                StartDateTime = DateTime.Now,
+                StartDateTime = DateTime,
                 Account = new Account(),
                 Club = club
             };
@@ -51,38 +54,14 @@ namespace BulkaBussinessLogic.Implementation
             var player = _playersRepository.GetAll().ToList();
             var gameProcess = _gameProcessRepository.GetAll().First(c => c.Id == id);
 
-            var gameProcessItems = gameProcess.Payments.Where(c => c.Sender != null).GroupBy(c => c.Sender).Select(c =>
-            {
-                var gameprocess = new GameProcessItem()
-                {
-                    PlayerName = c.Key.Name,
-                    PlayerImage = c.Key.ImageUrl,
-                    Input = c.Select(i => new PlayerStuff()
-                    {
-                        Amount = i.Amount,
-                        Time = i.CreateDateTime.ToShortTimeString()
-                    }).ToList(),
-                };
-
-                var output = gameProcess.Payments.FirstOrDefault(p => p.Recipient != null && p.Recipient.Id == c.Key.Id);
-                if (output != null)
-                {
-                    gameprocess.OutPut = new PlayerStuff()
-                    {
-                        Amount = output.Amount,
-                        Time = output.CreateDateTime.ToShortTimeString()
-                    };
-                }
-
-                return gameprocess;
-            }).ToList();
+            var gameProcessItems = GetGameProcessItems(gameProcess);
 
             var totalInput = gameProcessItems.SelectMany(c => c.Input.Select(i => i.Amount).ToList()).Sum();
             var totalOutput = gameProcessItems.Where(c => c.OutPut != null).Select(c => c.OutPut.Amount).Sum();
 
             TimeSpan subtract;
             subtract = !gameProcess.EndDateTime.HasValue
-                ? DateTime.Now.Subtract(gameProcess.StartDateTime.GetValueOrDefault())
+                ? DateTime.Subtract(gameProcess.StartDateTime.GetValueOrDefault())
                 : gameProcess.EndDateTime.Value.Subtract(gameProcess.StartDateTime.GetValueOrDefault());
             var dirationTimeStr = string.Format("{0} ч. {1} мин.", (int)subtract.TotalHours, subtract.Minutes);
 
@@ -108,8 +87,40 @@ namespace BulkaBussinessLogic.Implementation
         {
             var gameProcess = _gameProcessRepository.GetAll().First(c => c.Id == gameProcessId);
 
-            gameProcess.EndDateTime = DateTime.Now;
-            _gameProcessRepository.Save();
+            if (!gameProcess.EndDateTime.HasValue)
+            {
+                gameProcess.EndDateTime = DateTime;
+                _gameProcessRepository.Save();
+
+                var playersSessions = new List<PlayerSession>();
+
+                var gameProcessItems = GetGameProcessItems(gameProcess);
+
+                foreach (var gameProcessItem in gameProcessItems)
+                {
+                    if (gameProcessItem.OutPut == null)
+                    {
+                        gameProcessItem.OutPut = new PlayerStuff
+                        {
+                            Amount = 0,
+                            Time = DateTime
+                        };
+                    }
+
+                    playersSessions.Add(new PlayerSession()
+                    {
+                        PlayerId = gameProcessItem.PlayerId,
+                        ClubId = gameProcess.ClubId,
+                        Begin = gameProcessItem.Input.First().Time,
+                        End = gameProcessItem.OutPut.Time,
+                        Input = gameProcessItem.Input.Sum(c => c.Amount),
+                        Output = gameProcessItem.OutPut.Amount
+                    });
+                }
+
+                PlayerSessionService.Create(playersSessions);
+            }
+            
         }
 
         public bool Seat(int playerId, decimal amount, int gameProcessId)
@@ -156,38 +167,14 @@ namespace BulkaBussinessLogic.Implementation
 
                 foreach (var gameProcess in gameProcesses)
                 {
-                    var gameProcessItems = gameProcess.Payments.Where(c => c.Sender != null).GroupBy(c => c.Sender).Select(c =>
-                    {
-                        var gameprocess = new GameProcessItem()
-                        {
-                            PlayerName = c.Key.Name,
-                            PlayerImage = c.Key.ImageUrl,
-                            Input = c.Select(i => new PlayerStuff()
-                            {
-                                Amount = i.Amount,
-                                Time = i.CreateDateTime.ToShortTimeString()
-                            }).ToList(),
-                        };
-
-                        var output = gameProcess.Payments.FirstOrDefault(p => p.Recipient != null && p.Recipient.Id == c.Key.Id);
-                        if (output != null)
-                        {
-                            gameprocess.OutPut = new PlayerStuff()
-                            {
-                                Amount = output.Amount,
-                                Time = output.CreateDateTime.ToShortTimeString()
-                            };
-                        }
-
-                        return gameprocess;
-                    }).ToList();
+                    var gameProcessItems = GetGameProcessItems(gameProcess);
 
                     var totalInput = gameProcessItems.SelectMany(c => c.Input.Select(i => i.Amount).ToList()).Sum();
                     var totalOutput = gameProcessItems.Where(c => c.OutPut != null).Select(c => c.OutPut.Amount).Sum();
 
                     TimeSpan subtract;
                     subtract = !gameProcess.EndDateTime.HasValue
-                        ? DateTime.Now.Subtract(gameProcess.StartDateTime.GetValueOrDefault())
+                        ? DateTime.Subtract(gameProcess.StartDateTime.GetValueOrDefault())
                         : gameProcess.EndDateTime.Value.Subtract(gameProcess.StartDateTime.GetValueOrDefault());
                     var dirationTimeStr = string.Format("{0} ч. {1} мин.", (int)subtract.TotalHours, subtract.Minutes);
 
@@ -203,10 +190,100 @@ namespace BulkaBussinessLogic.Implementation
                     };
                     clubItem.Items.Add(item);
                 }
+
+                clubItem.Items = clubItem.Items.OrderByDescending(c => c.DateTime).Take(10).ToList();
                 gameProcessList.Clubs.Add(clubItem);
             }
 
             return gameProcessList;
+        }
+
+        public bool CreateTestGameProcess(TestGameProcessResquest resquest)
+        {
+            var rand = new Random();
+            var players = new List<Player>();
+
+            var allPlayers = _playersRepository.GetAll().ToList();
+            for (int i = 0; i < resquest.PlayersCount; i++)
+            {
+                players.Add(allPlayers.ElementAt(rand.Next(0, allPlayers.Count)));
+            }
+
+            var dateTime = resquest.DateTime;
+
+            UpdateDateTime(dateTime);
+
+            var gameProcess = this.Create(resquest.ClubId);
+
+            foreach (var player in players)
+            {
+                this.Seat(player.Id, rand.Next(resquest.MinAmount, resquest.MaxAmount), gameProcess.Id);
+            }
+
+            foreach (var player in players)
+            {
+                var avgCount = rand.Next(0, resquest.AvgCountRebuy);
+                for (int i = 0; i < avgCount; i++)
+                {
+                    dateTime = dateTime.AddMinutes(rand.Next(10, 25));
+                    UpdateDateTime(dateTime);
+                    Rebuy(player.Id, rand.Next(resquest.MinAmount, resquest.MaxAmount), gameProcess.Id);    
+                }
+            }
+
+            foreach (var player in players)
+            {
+                dateTime = dateTime.AddMinutes(rand.Next(10, 35));
+                UpdateDateTime(dateTime);
+                var isOut = rand.Next(0, 100) < 35;
+                if (isOut)
+                {
+                    SeatOut(player.Id, rand.Next(resquest.MinAmount, resquest.MaxAmount*2), gameProcess.Id);
+                }
+            }
+
+            this.StopProcess(gameProcess.Id);
+
+            return true;
+        }
+
+        private void UpdateDateTime(DateTime dateTime)
+        {
+            this.DateTime = dateTime;
+            this.PaymentService.DateTime = dateTime;   
+        }
+
+        private List<GameProcessItem> GetGameProcessItems(GameProcess gameProcess)
+        {
+            var gameProcessItems = gameProcess.Payments.Where(c => c.Sender != null).GroupBy(c => c.Sender).Select(c =>
+            {
+                var gameprocess = new GameProcessItem()
+                {
+                    PlayerId = c.Key.Id,
+                    PlayerName = c.Key.Name,
+                    PlayerImage = c.Key.ImageUrl,
+                    
+                    Input = c.Select(i => new PlayerStuff()
+                    {
+                        Amount = i.Amount,
+                        Time = i.CreateDateTime
+                    }).ToList(),
+                };
+
+                var output = gameProcess.Payments.FirstOrDefault(p => p.Recipient != null && p.Recipient.Id == c.Key.Id);
+                if (output != null)
+                {
+                    gameprocess.OutPut = new PlayerStuff()
+                    {
+                        Amount = output.Amount,
+                        Time = output.CreateDateTime
+                    };
+                }
+
+                return gameprocess;
+            }).ToList();
+
+            return gameProcessItems;
         }
     }
 }

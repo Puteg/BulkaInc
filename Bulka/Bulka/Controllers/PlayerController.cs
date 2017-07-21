@@ -1,9 +1,15 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using Bulka.DataAccess;
 using Bulka.DataModel;
 using Bulka.Models;
+using Bulka.Models.Player;
 using Bulka.Repository;
+using BulkaBussinessLogic;
+using BulkaBussinessLogic.Implementation;
 
 namespace Bulka.Controllers
 {
@@ -11,16 +17,53 @@ namespace Bulka.Controllers
     public class PlayerController : Controller
     {
         private readonly PlayersRepository _playersRepository;
+        private readonly PlayerService _playerService;
 
         public PlayerController()
         {
             _playersRepository = new PlayersRepository();
+            _playerService = new PlayerService(new BulkaContext());
         }
 
         public ActionResult Profile(int id)
         {
             var player = _playersRepository.FindBy(c => c.Id == id).Single();
-            return View(player);
+            var playerSessions = _playerService.GetSessions(id);
+
+            var playerSessionList = playerSessions.Select(c => new PlayerSessionListViewModel()
+            {
+                Id = c.Id,
+                DateTime = c.Begin.ToLongDateString(),
+                Input = c.Input.ToString("0.##"),
+                Output = c.Output.ToString("0.##"),
+                ClubId = c.ClubId,
+                ClubName = c.Club.Name,
+                Duration = GetDuration(c.Begin, c.End)
+            }).ToList();
+
+            var grouping = playerSessionList.GroupBy(c => c.ClubName).ToList();
+
+            var vm = new PlayerProfileViewModel()
+            {
+                      Id = player.Id,
+                      Name = player.Name,
+                      Address = player.Address,
+                      Phone = player.Phone,
+                      Vk = player.Vk,
+                      ImageUrl = player.ImageUrl,
+                      AdditionInfo = player.AdditionInfo,
+
+                      PlayerSessionList = playerSessionList,
+                      Grouping = grouping
+            };
+
+            return View(vm);
+        }
+
+        private string GetDuration(DateTime begin, DateTime end)
+        {
+            var subtract = end.Subtract(begin);
+            return string.Format("{0} ч. {1} мин.", (int)subtract.TotalHours, subtract.Minutes);
         }
 
         public ActionResult All()
