@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using AutoMapper;
 using Bulka.DataAccess;
 using Bulka.DataModel;
 using Bulka.Models;
 using Bulka.Models.Player;
 using Bulka.Repository;
-using BulkaBussinessLogic;
 using BulkaBussinessLogic.Implementation;
 
 namespace Bulka.Controllers
@@ -29,41 +27,32 @@ namespace Bulka.Controllers
         {
             var player = _playersRepository.FindBy(c => c.Id == id).Single();
             var playerSessions = _playerService.GetSessions(id);
+            var grouping = playerSessions.GroupBy(c => c.Club.Name).OrderBy(c => c.Key).ToList();
+            
+            var vm = Mapper.Map<PlayerProfileViewModel>(player);
 
-            var playerSessionList = playerSessions.Select(c => new PlayerSessionListViewModel()
+            var all = Mapper.Map<PlayerSessionListViewModel>(playerSessions);
+            all.Title = "Все игры";
+
+            var groupingSessions = grouping.Select(g =>
             {
-                Id = c.Id,
-                DateTime = c.Begin.ToLongDateString(),
-                Input = c.Input.ToString("0.##"),
-                Output = c.Output.ToString("0.##"),
-                ClubId = c.ClubId,
-                ClubName = c.Club.Name,
-                Duration = GetDuration(c.Begin, c.End)
+                var tmp = Mapper.Map<PlayerSessionListViewModel>(g.ToList());
+                tmp.Title = g.Key;
+
+                return tmp;
             }).ToList();
 
-            var grouping = playerSessionList.GroupBy(c => c.ClubName).ToList();
-
-            var vm = new PlayerProfileViewModel()
+            vm.Sessions.Add(all);
+            vm.Sessions.AddRange(groupingSessions);
+            vm.Visitation = new PlayerVisitation
             {
-                      Id = player.Id,
-                      Name = player.Name,
-                      Address = player.Address,
-                      Phone = player.Phone,
-                      Vk = player.Vk,
-                      ImageUrl = player.ImageUrl,
-                      AdditionInfo = player.AdditionInfo,
-
-                      PlayerSessionList = playerSessionList,
-                      Grouping = grouping
+                VisitationItems = grouping.Select(c => new PlayerVisitationItem()
+                {
+                    ClubName = c.Key,
+                    Persent = ((int)((double)c.Count() / playerSessions.Count * 100)).ToString()
+                }).ToList()
             };
-
             return View(vm);
-        }
-
-        private string GetDuration(DateTime begin, DateTime end)
-        {
-            var subtract = end.Subtract(begin);
-            return string.Format("{0} ч. {1} мин.", (int)subtract.TotalHours, subtract.Minutes);
         }
 
         public ActionResult All()

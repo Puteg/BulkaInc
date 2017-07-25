@@ -35,84 +35,110 @@
             </li>
         </ul>
 
-        <a href="@Url.Action("Edit", "Player", new { id = @Model.Id })" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Редактировать</a>
-        <a href="@Url.Action("All", "Player", new { id = @Model.Id })" class="btn btn-default"><i class="fa fa-edit m-right-xs"></i>Назад к списку</a>
+        <a href="@Url.Action("Edit", "Player", new {id = @Model.Id})" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Редактировать</a>
+        <a href="@Url.Action("All", "Player", new {id = @Model.Id})" class="btn btn-default"><i class="fa fa-edit m-right-xs"></i>Назад к списку</a>
+        <br/>
+
+        <h4>Посещение</h4>
+        <ul class="list-unstyled user_data">
+            @foreach (var tab in Model.Visitation.VisitationItems)
+            {
+                <li>
+                    <p>@tab.ClubName</p>
+                    <div class="progress progress_sm">
+                        <div class='progress-bar bg-green' role='progressbar' data-transitiongoal='@tab.Persent' @*style='width: @tab.Persent%;' aria-valuenow='(@tab.Persent-1)'*@></div>
+                    </div>
+                </li>
+            }
+        </ul>
 
     </div>
     <div class="col-md-9 col-sm-9 col-xs-12">
 
         <div class="" role="tabpanel" data-example-id="togglable-tabs">
             <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                <li role="presentation" class="active">
-                    <a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Последние игры</a>
-                </li>
-                @foreach (var tab in Model.Grouping)
+                @foreach (var tab in Model.Sessions)
                 {
                     <li role="presentation">
-                        <a href="#@Model.Grouping.IndexOf(tab)" id="home-@Model.Grouping.IndexOf(tab)" role="tab" data-toggle="tab" aria-expanded="true">@tab.Key</a>
+                        <a href="#@Model.Sessions.IndexOf(tab)" id="home-@Model.Sessions.IndexOf(tab)" role="tab" data-toggle="tab" aria-expanded="true">@tab.Title</a>
                     </li>
                 }
             </ul>
             <div id="myTabContent" class="tab-content">
-                <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
-                    <table class="data table table-striped no-margin">
-                        <thead>
-                        <tr>
-                            <th>Дата</th>
-                            <th>Клуб</th>
-                            <th>Продолжительность</th>
-                            <th>Вход</th>
-                            <th>Выход</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach (var item in Model.PlayerSessionList)
-                        {
-                            <tr>
-                                <td>@item.DateTime</td>
-                                <td>@item.ClubName</td>
-                                <td>@item.Duration</td>
-                                <td>@item.Input</td>
-                                <td>@item.Output</td>
-                            </tr>
-                        }
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>
-
-            @foreach (var tab in Model.Grouping)
-            {
-                <div id="myTabContent @Model.Grouping.IndexOf(tab)" class="tab-content">
-                    <div role="tabpanel" class="tab-pane fade" id="@Model.Grouping.IndexOf(tab)" aria-labelledby="home-@Model.Grouping.IndexOf(tab)">
-                        <table class="data table table-striped no-margin">
+                @foreach (var tab in Model.Sessions)
+                {
+                    <div role="tabpanel" class="tab-pane fade" id="@Model.Sessions.IndexOf(tab)" aria-labelledby="home-@Model.Sessions.IndexOf(tab)">
+                        <div class="row tile_count">
+                            @*<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                                <span class="count_top"><i class="fa fa-user"></i> Кол-во дней</span>
+                                <div class="count">@tab.DayCount</div>
+                                <span class="count_bottom"><i class="green">4% </i> Последняя неделя</span>
+                            </div>*@
+                            <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
+                                <span class="count_top"><i class="fa fa-clock-o"></i> Среднee время</span>
+                                <div class="count">@tab.AvgDuration</div>
+                                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> Последняя неделя</span>
+                            </div>
+                            <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
+                                <span class="count_top"><i class="fa fa-user"></i> Средний вход </span>
+                                <div class="count">@tab.AvgInput</div>
+                                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> Последняя неделя</span>
+                            </div>
+                            <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
+                                <span class="count_top"><i class="fa fa-user"></i> Средний выход</span>
+                                <div class="count">@tab.AvgOutput</div>
+                                <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> Последняя неделя</span>
+                            </div>
+                            <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
+                                <span class="count_top"><i class="fa fa-user"></i> Результат</span>
+                                @{
+                                    var color = tab.Profit.Contains('-') ? "red" : "green";
+                                    @Html.Raw("<div class='count " + color + "'>" + tab.Profit + "</div>");
+                                }
+                                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> Последняя неделя</span>
+                            </div>
+                        </div>
+                        <table id="club_@Model.Sessions.IndexOf(tab)" class="data table table-striped no-margin">
                             <thead>
-                                <tr>
-                                    <th>Дата</th>
-                                    <th>Клуб</th>
-                                    <th>Продолжительность</th>
-                                    <th>Вход</th>
-                                    <th>Выход</th>
-                                </tr>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Клуб</th>
+                                <th>Время</th>
+                                <th>Вход</th>
+                                <th>Выход</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in tab.ToList())
-                                {
-                                    <tr>
-                                        <td>@item.DateTime</td>
-                                        <td>@item.ClubName</td>
-                                        <td>@item.Duration</td>
-                                        <td>@item.Input</td>
-                                        <td>@item.Output</td>
-                                    </tr>
-                                }
+                            @foreach (var item in tab.Items)
+                            {
+                                <tr>
+                                    <td>@item.DateTime</td>
+                                    <td>@item.ClubName</td>
+                                    <td>@item.Duration</td>
+                                    <td>@item.Input</td>
+                                    <td>@item.Output</td>
+                                </tr>
+                            }
                             </tbody>
                         </table>
 
                     </div>
-                </div>
-            }
+                }
+            </div>
         </div>
     </div>
 </div>
+
+@section scripts
+{
+    <script>
+        $(function () {
+            $('#home-0').click();
+            $('.progress-bar').progressbar();
+            @foreach (var tab in Model.Sessions)
+            {
+                @Html.Raw("$('#club_" + Model.Sessions.IndexOf(tab) + "').DataTable(); ");
+            }
+        });
+    </script>
+}

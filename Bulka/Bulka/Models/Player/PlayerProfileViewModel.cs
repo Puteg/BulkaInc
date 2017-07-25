@@ -9,7 +9,7 @@ namespace Bulka.Models.Player
     {
         public PlayerProfileViewModel()
         {
-            PlayerSessionList = new List<PlayerSessionListViewModel>();
+            Sessions = new List<PlayerSessionListViewModel>();
         }
 
         public int Id { get; set; }
@@ -20,7 +20,7 @@ namespace Bulka.Models.Player
         public string ImageUrl { get; set; }
         public string AdditionInfo { get; set; }
 
-        public List<PlayerSessionListViewModel> PlayerSessionList { get; set; }
-        public List<IGrouping<string, PlayerSessionListViewModel>> Grouping { get; set; }
+        public List<PlayerSessionListViewModel> Sessions { get; set; }
+        public PlayerVisitation Visitation { get; set; }
     }
 }

@@ -1,16 +1,25 @@
-﻿namespace Bulka.Models.Player
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace Bulka.Models.Player
 {
     public class PlayerSessionListViewModel
     {
-        public long Id { get; set; }
-        public int PlayerId { get; set; }
-        public int ClubId { get; set; }
+        public PlayerSessionListViewModel()
+        {
+            Items = new List<PlayerSessionItemViewModel>();
+        }
 
-        public string DateTime { get; set; }
-        public string Duration { get; set; }
+        public string Title { get; set; }
 
-        public string ClubName { get; set; }
-        public string Input { get; set; }
-        public string Output { get; set; }
+        public int DayCount { get; set; }
+        public string AvgDuration { get; set; }
+        public string AvgInput { get; set; }
+        public string AvgOutput { get; set; }
+        public string Profit { get; set; }
+
+        public List<PlayerSessionItemViewModel> Items { get; set; }
     }
 }
