@@ -9,6 +9,7 @@ using BulkaBussinessLogic.Model.Club;
 
 namespace Bulka.Controllers
 {
+    [Authorize]
     public class ClubController : Controller
     {
         private readonly ClubService _clubService;

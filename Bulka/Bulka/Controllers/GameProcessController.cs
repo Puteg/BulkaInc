@@ -9,6 +9,7 @@ using BulkaBussinessLogic.Model.GameProcess;
 
 namespace Bulka.Controllers
 {
+    [Authorize]
     public class GameProcessController : Controller
     {
         private readonly GameProcessService _processService;

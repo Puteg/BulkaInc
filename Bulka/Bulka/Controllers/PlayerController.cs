@@ -28,30 +28,32 @@ namespace Bulka.Controllers
             var player = _playersRepository.FindBy(c => c.Id == id).Single();
             var playerSessions = _playerService.GetSessions(id);
             var grouping = playerSessions.GroupBy(c => c.Club.Name).OrderBy(c => c.Key).ToList();
-            
             var vm = Mapper.Map<PlayerProfileViewModel>(player);
 
-            var all = Mapper.Map<PlayerSessionListViewModel>(playerSessions);
-            all.Title = "Все игры";
-
-            var groupingSessions = grouping.Select(g =>
+            if (playerSessions.Any())
             {
-                var tmp = Mapper.Map<PlayerSessionListViewModel>(g.ToList());
-                tmp.Title = g.Key;
+                var all = Mapper.Map<PlayerSessionListViewModel>(playerSessions);
+                all.Title = "Все игры";
 
-                return tmp;
-            }).ToList();
-
-            vm.Sessions.Add(all);
-            vm.Sessions.AddRange(groupingSessions);
-            vm.Visitation = new PlayerVisitation
-            {
-                VisitationItems = grouping.Select(c => new PlayerVisitationItem()
+                var groupingSessions = grouping.Select(g =>
                 {
-                    ClubName = c.Key,
-                    Persent = ((int)((double)c.Count() / playerSessions.Count * 100)).ToString()
-                }).ToList()
-            };
+                    var tmp = Mapper.Map<PlayerSessionListViewModel>(g.ToList());
+                    tmp.Title = g.Key;
+
+                    return tmp;
+                }).ToList();
+
+                vm.Sessions.Add(all);
+                vm.Sessions.AddRange(groupingSessions);
+                vm.Visitation = new PlayerVisitation
+                {
+                    VisitationItems = grouping.Select(c => new PlayerVisitationItem()
+                    {
+                        ClubName = c.Key,
+                        Persent = ((int) ((double) c.Count()/playerSessions.Count*100)).ToString()
+                    }).ToList()
+                };
+            }
             return View(vm);
         }
 
@@ -132,6 +134,15 @@ namespace Bulka.Controllers
             }
 
             return View(model);
+        }
+
+        public ActionResult Delete(int id)
+        {
+            var player = _playersRepository.FindBy(c => c.Id == id).Single();
+            _playersRepository.Delete(player);
+            _playersRepository.Save();
+
+            return RedirectToAction("All");
         }
     }
 }

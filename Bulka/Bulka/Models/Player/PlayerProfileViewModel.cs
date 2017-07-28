@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 namespace Bulka.Models.Player
 {
@@ -10,6 +7,7 @@ namespace Bulka.Models.Player
         public PlayerProfileViewModel()
         {
             Sessions = new List<PlayerSessionListViewModel>();
+            Visitation = new PlayerVisitation();
         }
 
         public int Id { get; set; }

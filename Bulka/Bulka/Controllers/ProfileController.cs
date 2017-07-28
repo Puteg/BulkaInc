@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Bulka.DataAccess;
 using BulkaBussinessLogic.Implementation;
 using BulkaBussinessLogic.Model.Profile;
@@ -10,6 +6,7 @@ using Microsoft.AspNet.Identity;
 
 namespace Bulka.Controllers
 {
+    [Authorize]
     public class ProfileController : Controller
     {
         private readonly ProfileService _profileService;
