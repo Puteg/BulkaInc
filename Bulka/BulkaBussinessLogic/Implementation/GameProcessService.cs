@@ -36,7 +36,7 @@ namespace BulkaBussinessLogic.Implementation
         {
             var club = _clubRepository.FindBy(c => c.Id == clubId).First();
             
-            var gameProcess = new GameProcess()
+            var gameProcess = new GameProcess
             {
                 StartDateTime = DateTime,
                 Account = new Account(),
@@ -65,7 +65,7 @@ namespace BulkaBussinessLogic.Implementation
                 : gameProcess.EndDateTime.Value.Subtract(gameProcess.StartDateTime.GetValueOrDefault());
             var dirationTimeStr = string.Format("{0} ч. {1} мин.", (int)subtract.TotalHours, subtract.Minutes);
 
-            var vm = new GameProcessModel()
+            var vm = new GameProcessModel
             {
                 Items = gameProcessItems,
 
@@ -76,8 +76,8 @@ namespace BulkaBussinessLogic.Implementation
                 Total = (totalInput - totalOutput).ToString("0.##"),
 
                 Id = id,
-                EditModel = new ActionEditModel() {GameProcessId = id},
-                Players = player.Select(c => new SelectListItem() {Text = c.Name, Value = c.Id.ToString()}).ToList()
+                EditModel = new ActionEditModel {GameProcessId = id},
+                Players = player.Select(c => new SelectListItem {Text = c.Name, Value = c.Id.ToString()}).ToList()
             };
 
             return vm;
@@ -107,7 +107,7 @@ namespace BulkaBussinessLogic.Implementation
                         };
                     }
 
-                    playersSessions.Add(new PlayerSession()
+                    playersSessions.Add(new PlayerSession
                     {
                         PlayerId = gameProcessItem.PlayerId,
                         ClubId = gameProcess.ClubId,
@@ -157,7 +157,7 @@ namespace BulkaBussinessLogic.Implementation
 
             foreach (var club in clubs)
             {
-                var clubItem = new ClubItem()
+                var clubItem = new ClubItem
                 {
                     Id = club.Id,
                     Name = club.Name
@@ -178,7 +178,7 @@ namespace BulkaBussinessLogic.Implementation
                         : gameProcess.EndDateTime.Value.Subtract(gameProcess.StartDateTime.GetValueOrDefault());
                     var dirationTimeStr = string.Format("{0} ч. {1} мин.", (int)subtract.TotalHours, subtract.Minutes);
 
-                    var item = new GameProcessListItem()
+                    var item = new GameProcessListItem
                     {
                         Id = gameProcess.Id,
                         DateTime = gameProcess.StartDateTime.GetValueOrDefault().ToShortDateString(),
@@ -186,94 +186,99 @@ namespace BulkaBussinessLogic.Implementation
                         PlayerCount = gameProcessItems.Count,
                         TotalInput = totalInput.ToString("0.##"),
                         TotalOutput = totalOutput.ToString("0.##"),
-                        Total = (totalInput - totalOutput).ToString("0.##"),
+                        Total = (totalInput - totalOutput)
                     };
                     clubItem.Items.Add(item);
                 }
 
-                clubItem.Items = clubItem.Items.OrderByDescending(c => c.DateTime).Take(10).ToList();
+                clubItem.PlayersCount = clubItem.Items.Sum(c => c.PlayerCount);
+                clubItem.Total = clubItem.Items.Sum(c => c.Total);
+
+                clubItem.Items = clubItem.Items.OrderByDescending(c => c.DateTime).ToList();
                 gameProcessList.Clubs.Add(clubItem);
             }
 
             return gameProcessList;
         }
 
-        public bool CreateTestGameProcess(TestGameProcessResquest resquest)
+        public bool CreateTestGameProcess(TestGameProcessResquest request)
         {
             var rand = new Random();
             var players = new List<Player>();
-
             var allPlayers = _playersRepository.GetAll().ToList();
-            for (int i = 0; i < resquest.PlayersCount; i++)
+
+            for (int j = 0; j < request.DayCount; j++)
             {
-                players.Add(allPlayers.ElementAt(rand.Next(0, allPlayers.Count)));
-            }
-
-            var dateTime = resquest.DateTime;
-
-            UpdateDateTime(dateTime);
-
-            var gameProcess = this.Create(resquest.ClubId);
-
-            foreach (var player in players)
-            {
-                this.Seat(player.Id, rand.Next(resquest.MinAmount, resquest.MaxAmount), gameProcess.Id);
-            }
-
-            foreach (var player in players)
-            {
-                var avgCount = rand.Next(0, resquest.AvgCountRebuy);
-                for (int i = 0; i < avgCount; i++)
+                for (int i = 0; i < request.PlayersCount; i++)
                 {
-                    dateTime = dateTime.AddMinutes(rand.Next(10, 25));
-                    UpdateDateTime(dateTime);
-                    Rebuy(player.Id, rand.Next(resquest.MinAmount, resquest.MaxAmount), gameProcess.Id);    
+                    players.Add(allPlayers.ElementAt(rand.Next(0, allPlayers.Count)));
                 }
-            }
 
-            foreach (var player in players)
-            {
-                dateTime = dateTime.AddMinutes(rand.Next(10, 35));
+                var dateTime = request.DateTime.AddDays(j);
+
                 UpdateDateTime(dateTime);
-                var isOut = rand.Next(0, 100) < 35;
-                if (isOut)
+
+                var gameProcess = Create(request.ClubId);
+
+                foreach (var player in players)
                 {
-                    SeatOut(player.Id, rand.Next(resquest.MinAmount, resquest.MaxAmount*2), gameProcess.Id);
+                    Seat(player.Id, rand.Next(request.MinAmount, request.MaxAmount), gameProcess.Id);
                 }
+
+                foreach (var player in players)
+                {
+                    var avgCount = rand.Next(0, request.AvgCountRebuy);
+                    for (int i = 0; i < avgCount; i++)
+                    {
+                        dateTime = dateTime.AddMinutes(rand.Next(10, 25));
+                        UpdateDateTime(dateTime);
+                        Rebuy(player.Id, rand.Next(request.MinAmount, request.MaxAmount), gameProcess.Id);
+                    }
+                }
+
+                foreach (var player in players)
+                {
+                    dateTime = dateTime.AddMinutes(rand.Next(10, 35));
+                    UpdateDateTime(dateTime);
+                    var isOut = rand.Next(0, 100) < 45;
+                    if (isOut)
+                    {
+                        SeatOut(player.Id, rand.Next(request.MinAmount, request.MaxAmount*2), gameProcess.Id);
+                    }
+                }
+
+                StopProcess(gameProcess.Id);
             }
-
-            this.StopProcess(gameProcess.Id);
-
             return true;
         }
 
         private void UpdateDateTime(DateTime dateTime)
         {
-            this.DateTime = dateTime;
-            this.PaymentService.DateTime = dateTime;   
+            DateTime = dateTime;
+            PaymentService.DateTime = dateTime;   
         }
 
         private List<GameProcessItem> GetGameProcessItems(GameProcess gameProcess)
         {
             var gameProcessItems = gameProcess.Payments.Where(c => c.Sender != null).GroupBy(c => c.Sender).Select(c =>
             {
-                var gameprocess = new GameProcessItem()
+                var gameprocess = new GameProcessItem
                 {
                     PlayerId = c.Key.Id,
                     PlayerName = c.Key.Name,
                     PlayerImage = c.Key.ImageUrl,
                     
-                    Input = c.Select(i => new PlayerStuff()
+                    Input = c.Select(i => new PlayerStuff
                     {
                         Amount = i.Amount,
                         Time = i.CreateDateTime
-                    }).ToList(),
+                    }).ToList()
                 };
 
                 var output = gameProcess.Payments.FirstOrDefault(p => p.Recipient != null && p.Recipient.Id == c.Key.Id);
                 if (output != null)
                 {
-                    gameprocess.OutPut = new PlayerStuff()
+                    gameprocess.OutPut = new PlayerStuff
                     {
                         Amount = output.Amount,
                         Time = output.CreateDateTime

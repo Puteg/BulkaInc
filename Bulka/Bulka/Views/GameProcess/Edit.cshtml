@@ -1,5 +1,5 @@
 ﻿@using BulkaBussinessLogic.Model.GameProcess
-@model BulkaBussinessLogic.Model.GameProcess.GameProcessModel
+@model GameProcessModel
 
 <div class="row">
     <div class="col-md-4 col-sm-4 col-xs-12">
@@ -109,7 +109,7 @@
                     </tbody>
                 </table>
                 <div class="ln_solid"></div>
-                <a href="@Url.Action("End","GameProcess", new { id = @Model.Id})" class="btn btn-success">
+                <a href="@Url.Action("End","GameProcess", new { id = @Model.Id})" class="btn btn-success center-block">
                     Закончить процесс
                 </a>
             </div>

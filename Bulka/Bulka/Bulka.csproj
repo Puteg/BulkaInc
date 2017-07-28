@@ -209,9 +209,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mappings\GameProcessToViewModelMappingProfile.cs" />
     <Compile Include="Mappings\PlayerToViewModelMappingProfile.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\GameProcess\HomeViewModel.cs" />
+    <Compile Include="Models\GameProcess\TestGameProcessViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PlayerEditModel.cs" />
@@ -338,6 +341,7 @@
     <Content Include="Views\Club\Edit.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Profile\Edit.cshtml" />
+    <Content Include="Views\GameProcess\CreateTestGameProcess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

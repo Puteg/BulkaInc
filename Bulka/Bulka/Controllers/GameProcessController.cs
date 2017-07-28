@@ -1,5 +1,9 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Linq;
+using System.Web.Mvc;
+using AutoMapper;
 using Bulka.DataAccess;
+using Bulka.Models.GameProcess;
 using BulkaBussinessLogic.Implementation;
 using BulkaBussinessLogic.Model.GameProcess;
 
@@ -7,11 +11,14 @@ namespace Bulka.Controllers
 {
     public class GameProcessController : Controller
     {
-        private readonly GameProcessService _service;
+        private readonly GameProcessService _processService;
+        private readonly ClubService _clubService;
 
         public GameProcessController()
         {
-            _service = new GameProcessService(new BulkaContext());
+            var contex = new BulkaContext();
+            _processService = new GameProcessService(contex);
+            _clubService = new ClubService(contex);
         }
 
         [HttpPost]
@@ -25,13 +32,13 @@ namespace Bulka.Controllers
                     switch (model.Type)
                     {
                         case ActionType.Seat:
-                            _service.Seat(model.PlayerId, model.Amount, model.GameProcessId);
+                            _processService.Seat(model.PlayerId, model.Amount, model.GameProcessId);
                             break;
                         case ActionType.Rebuy:
-                            _service.Rebuy(model.PlayerId, model.Amount, model.GameProcessId);
+                            _processService.Rebuy(model.PlayerId, model.Amount, model.GameProcessId);
                             break;
                         case ActionType.SeatOut:
-                            _service.SeatOut(model.PlayerId, model.Amount, model.GameProcessId);
+                            _processService.SeatOut(model.PlayerId, model.Amount, model.GameProcessId);
                             break;
                     }
                 }
@@ -42,27 +49,51 @@ namespace Bulka.Controllers
 
         public ActionResult Details(int id)
         {
-            var vm = _service.Edit(id);
+            var vm = _processService.Edit(id);
             return View(vm);
         }
 
         public ActionResult Edit(int id)
         {
-            var vm = _service.Edit(id);
+            var vm = _processService.Edit(id);
             return View(vm);
         }
 
         public ActionResult Create(int clubId)
         {
-            var gameProcess = _service.Create(clubId);
+            var gameProcess = _processService.Create(clubId);
             return RedirectToAction("Edit", new { id = gameProcess.Id });
         }
 
         public ActionResult End(int id)
         {
-            _service.StopProcess(id);
+            _processService.StopProcess(id);
 
             return RedirectToAction("Details", new { id = id });
+        }
+
+        [HttpGet]
+        public ActionResult CreateTestGameProcess()
+        {
+            var clubs = _clubService.GetAll();
+            var vm = new TestGameProcessViewModel()
+            {
+                DateTime = DateTime.Now,
+                ClubSelectListItems = clubs.Clubs.Select(c => new SelectListItem() {Value = c.Id.ToString(), Text = c.Name}).ToList()
+            };
+            return View(vm);
+        }
+
+        [HttpPost]
+        public ActionResult CreateTestGameProcess(TestGameProcessViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var testGameProcessResquest = Mapper.Map<TestGameProcessResquest>(model);
+                _processService.CreateTestGameProcess(testGameProcessResquest);
+            }
+
+            return View(model);
         }
     }
 }

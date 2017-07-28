@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using Bulka.DataAccess;
+using Bulka.Models.GameProcess;
 using BulkaBussinessLogic.Implementation;
 
 namespace Bulka.Controllers
@@ -16,8 +17,12 @@ namespace Bulka.Controllers
 
         public ActionResult Index()
         {
-            var list = _service.GetAll();
-            return View(list);
+            var vm = new HomeViewModel()
+            {
+                ClubList = _service.GetAll()
+            };
+            
+            return View(vm);
         }
     }
 }

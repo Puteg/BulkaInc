@@ -10,6 +10,7 @@ namespace Bulka
             Mapper.Initialize(x =>
             {
                 x.AddProfile<PlayerToViewModelMappingProfile>();
+                x.AddProfile<GameProcessToViewModelMappingProfile>();
             });
         }
     }

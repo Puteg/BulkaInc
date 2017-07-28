@@ -22,6 +22,9 @@ namespace BulkaBussinessLogic.Model.GameProcess
 
         public int Id { get;set; }
         public string Name { get;set; }
+        public int PlayersCount { get; set; }
+        public decimal Total { get; set; }
+
         public List<GameProcessListItem> Items { get; set; }
     }
 
@@ -33,7 +36,7 @@ namespace BulkaBussinessLogic.Model.GameProcess
         public int PlayerCount { get; set; }
         public string TotalInput { get; set; }
         public string TotalOutput { get; set; }
-        public string Total { get; set; }
+        public decimal Total { get; set; }
         public string DirationTime { get; set; }
     }
 }

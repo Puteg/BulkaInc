@@ -1,13 +1,13 @@
-﻿@model BulkaBussinessLogic.Model.GameProcess.ClubList
+﻿@model Bulka.Models.GameProcess.HomeViewModel
 @{
     ViewBag.Title = "Стартовая страница";
     ViewBag.PageTitle = "Заголовок страницы";
     ViewBag.PanelTitle = "Заголовок панели";
 }
 
-@foreach (var club in Model.Clubs)
+@foreach (var club in Model.ClubList.Clubs)
 {
-    <div class="col-md-8 col-sm-8 col-xs-12 col-md-offset-2">
+    <div class="">
         <div class="x_panel">
             <div class="x_title">
                 <h2>
@@ -24,44 +24,68 @@
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Дата</th>
-                        <th>Кол-во игроков</th>
-                        <th>Время</th>
-                        <th>Вход</th>
-                        <th>Выход</th>
-                        <th>Разница</th>
-                        <th>Действия</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach (var item in club.Items)
-                    {
-                        <tr>
-                            <td>@item.Id</td>
-                            <td>@item.DateTime</td>
-                            <td class="text-center">@item.PlayerCount</td>
-                            <td>@item.DirationTime</td>
-                            <td>@item.TotalInput</td>
-                            <td>@item.TotalOutput</td>
-                            <td>@item.Total</td>
-                            <td>
-                                <a href="@Url.Action("Edit", "GameProcess", new {id = item.Id})" class="btn btn-default">
-                                    <span class="glyphicon glyphicon-folder-open"></span>
-                                </a>
-                            </td>
-                        </tr>
-                    }
-                    </tbody>
-                </table>
-                <div class="ln_solid"></div>
-                <a href="@Url.Action("Create", "GameProcess", new {clubId = @club.Id})" class="btn btn-success">
-                    Создать
-                </a>
+                <div class="row">
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="row top_tiles" style="margin: 10px 0;">
+                            <div class="col-md-6 col-sm-6 col-xs-12 tile">
+                                <span>Кол-во игроков</span>
+                                <h2>@club.PlayersCount</h2>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12 tile">
+                                <span>Итоговая разница</span>
+                                <h2>@club.Total</h2>
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                        <a href="@Url.Action("Create", "GameProcess", new {clubId = @club.Id})" class="btn btn-lg btn-success center-block">
+                            Создать
+                        </a>
+                    </div>
+                    <div class="col-md-8 col-sm-8 col-xs-12">
+                        <table id="club_@Model.ClubList.Clubs.IndexOf(club)" class="table">
+                            <thead>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Кол-во игроков</th>
+                                <th>Время</th>
+                                <th>Вход</th>
+                                <th>Выход</th>
+                                <th>Разница</th>
+                                <th>Действия</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (var item in club.Items)
+                            {
+                                <tr>
+                                    <td>@item.DateTime</td>
+                                    <td class="text-center">@item.PlayerCount</td>
+                                    <td>@item.DirationTime</td>
+                                    <td>@item.TotalInput</td>
+                                    <td>@item.TotalOutput</td>
+                                    <td>@item.Total.ToString("0.##")</td>
+                                    <td>
+                                        <a href="@Url.Action("Details", "GameProcess", new {id = item.Id})" class=""> Открыть </a>
+                                    </td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+}
+
+@section scripts
+{
+    <script>
+        $(function () {
+            @foreach (var club in Model.ClubList.Clubs)
+            {
+                @Html.Raw("$('#club_" + @Model.ClubList.Clubs.IndexOf(club) + "').DataTable(); ");
+            }
+        });
+    </script>
 }

@@ -9,6 +9,7 @@ namespace BulkaBussinessLogic.Model.GameProcess
     public class TestGameProcessResquest
     {
         public DateTime DateTime { get; set; }
+        public int DayCount { get; set; }
         public int ClubId { get; set; }
         public int PlayersCount { get; set; }
         public int MinAmount { get; set; }
