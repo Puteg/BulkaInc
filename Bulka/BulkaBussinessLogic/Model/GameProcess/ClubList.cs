@@ -31,12 +31,12 @@ namespace BulkaBussinessLogic.Model.GameProcess
     public class GameProcessListItem
     {
         public int Id { get; set; }
-        public string DateTime { get; set; }
+        public DateTime DateTime { get; set; }
 
         public int PlayerCount { get; set; }
-        public string TotalInput { get; set; }
-        public string TotalOutput { get; set; }
+        public decimal TotalInput { get; set; }
+        public decimal TotalOutput { get; set; }
         public decimal Total { get; set; }
-        public string DirationTime { get; set; }
+        public TimeSpan DirationTime { get; set; }
     }
 }

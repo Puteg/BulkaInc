@@ -80,9 +80,10 @@
     <Compile Include="IPaymentService.cs" />
     <Compile Include="IPlayerService.cs" />
     <Compile Include="Model\Club\ClubEdit.cs" />
-    <Compile Include="Model\Club\ClubList.cs" />
-    <Compile Include="Model\Club\ClubListItem.cs" />
-    <Compile Include="Model\GameProcess\ActionEditModel.cs" />
+    <Compile Include="Model\Club\Clubs.cs" />
+    <Compile Include="Model\Club\ClubItem.cs" />
+    <Compile Include="Model\GameProcess\Action.cs" />
+    <Compile Include="Model\GameProcess\ActionType.cs" />
     <Compile Include="Model\GameProcess\ClubList.cs" />
     <Compile Include="Model\GameProcess\GameProcessModel.cs" />
     <Compile Include="Model\GameProcess\TestGameProcessResquest.cs" />

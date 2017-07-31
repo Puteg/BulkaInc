@@ -15,11 +15,20 @@ namespace BulkaBussinessLogic.Implementation
             _clubRepository = new ClubRepository(context);
         }
 
-        public ClubList GetAll()
+        public Clubs GetAll()
         {
-            var clubs = _clubRepository.GetAll().ToList();
+            var items = _clubRepository.GetAll().Select(c => new ClubItem
+            {
+                Id = c.Id, 
+                Name = c.Name
+            });
 
-            return new ClubList {Clubs = clubs.Select(c => new ClubListItem() {Id = c.Id, Name = c.Name}).ToList()};
+            var clubs = new Clubs
+            {
+                Items = items.ToList()
+            };
+
+            return clubs;
         }
 
         public ClubEdit Get(int? id)

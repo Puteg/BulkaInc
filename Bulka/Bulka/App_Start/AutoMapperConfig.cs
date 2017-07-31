@@ -11,6 +11,7 @@ namespace Bulka
             {
                 x.AddProfile<PlayerToViewModelMappingProfile>();
                 x.AddProfile<GameProcessToViewModelMappingProfile>();
+                x.AddProfile<ClubToViewModelMappingProfile>();
             });
         }
     }

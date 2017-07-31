@@ -70,24 +70,24 @@
                     <div role="tabpanel" class="tab-pane fade" id="@Model.Sessions.IndexOf(tab)" aria-labelledby="home-@Model.Sessions.IndexOf(tab)">
                         <div class="row tile_count">
                             @*<div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-                                <span class="count_top"><i class="fa fa-user"></i> Кол-во дней</span>
-                                <div class="count">@tab.DayCount</div>
-                                <span class="count_bottom"><i class="green">4% </i> Последняя неделя</span>
-                            </div>*@
+                            <span class="count_top"><i class="fa fa-user"></i> Кол-во дней</span>
+                            <div class="count">@tab.DayCount</div>
+                            <span class="count_bottom"><i class="green">4% </i> Последняя неделя</span>
+                        </div>*@
                             <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
                                 <span class="count_top"><i class="fa fa-clock-o"></i> Среднee время</span>
                                 <div class="count">@tab.AvgDuration</div>
-                                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> Последняя неделя</span>
+                                @*<span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> Последняя неделя</span>*@
                             </div>
                             <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
                                 <span class="count_top"><i class="fa fa-user"></i> Средний вход </span>
                                 <div class="count">@tab.AvgInput</div>
-                                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> Последняя неделя</span>
+                                @*<span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> Последняя неделя</span>*@
                             </div>
                             <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
                                 <span class="count_top"><i class="fa fa-user"></i> Средний выход</span>
                                 <div class="count">@tab.AvgOutput</div>
-                                <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> Последняя неделя</span>
+                                @*<span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> Последняя неделя</span>*@
                             </div>
                             <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
                                 <span class="count_top"><i class="fa fa-user"></i> Результат</span>
@@ -95,36 +95,39 @@
                                     var color = tab.Profit.Contains('-') ? "red" : "green";
                                     @Html.Raw("<div class='count " + color + "'>" + tab.Profit + "</div>");
                                 }
-                                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> Последняя неделя</span>
+                                @*<span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> Последняя неделя</span>*@
                             </div>
                         </div>
-                        <table id="club_@Model.Sessions.IndexOf(tab)" class="data table table-striped no-margin">
+                        <table id="club_@Model.Sessions.IndexOf(tab)" class="table table-striped no-margin">
                             <thead>
-                            <tr>
-                                <th>Дата</th>
-                                <th>Клуб</th>
-                                <th>Время</th>
-                                <th>Вход</th>
-                                <th>Выход</th>
-                            </tr>
+                                <tr>
+                                    <th>Дата</th>
+                                    <th>Клуб</th>
+                                    <th>Время</th>
+                                    <th>Вход</th>
+                                    <th>Выход</th>
+                                    @*<th></th>*@
+                                </tr>
                             </thead>
                             <tbody>
-                            @foreach (var item in tab.Items)
-                            {
-                                <tr>
-                                    <td>@item.DateTime</td>
-                                    <td>@item.ClubName</td>
-                                    <td>@item.Duration</td>
-                                    <td>@item.Input</td>
-                                    <td>@item.Output</td>
-                                </tr>
-                            }
+                                @foreach (var item in tab.Items)
+                                {
+                                    <tr>
+                                        <td>@item.DateTime</td>
+                                        <td>@item.ClubName</td>
+                                        <td>@item.Duration</td>
+                                        <td>@item.Input</td>
+                                        <td>@item.Output</td>
+                                        @*<th width="10%"> <a href="@Url.Action("Details","GameProcess", new {id = @item.Id})">Показать</a></th>*@
+                                    </tr>
+                                }
                             </tbody>
                         </table>
 
                     </div>
                 }
             </div>
+
         </div>
     </div>
 </div>

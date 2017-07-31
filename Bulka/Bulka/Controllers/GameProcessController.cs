@@ -22,6 +22,59 @@ namespace Bulka.Controllers
             _clubService = new ClubService(contex);
         }
 
+        public ActionResult Create(int clubId)
+        {
+            var gameProcess = _processService.Create(clubId);
+            return RedirectToAction("Edit", new { id = gameProcess.Id });
+        }
+
+        public ActionResult Details(int id)
+        {
+            var processModel = _processService.Edit(id);
+            var vm = Mapper.Map<GameProcessEditModel>(processModel);
+
+            return View(vm);
+        }
+
+        public ActionResult Edit(int id)
+        {
+            var processModel = _processService.Edit(id);
+            var vm = Mapper.Map<GameProcessEditModel>(processModel);
+
+            return View(vm);
+        }
+
+        public ActionResult End(int id)
+        {
+            _processService.StopProcess(id);
+
+            return RedirectToAction("Details", new { id = id });
+        }
+
+        [HttpGet]
+        public ActionResult CreateTest()
+        {
+            var clubs = _clubService.GetAll();
+            var vm = new TestGameProcessViewModel()
+            {
+                DateTime = DateTime.Now,
+                ClubSelectListItems = clubs.Items.Select(c => new SelectListItem() {Value = c.Id.ToString(), Text = c.Name}).ToList()
+            };
+            return View(vm);
+        }
+
+        [HttpPost]
+        public ActionResult CreateTest(TestGameProcessViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var testGameProcessResquest = Mapper.Map<TestGameProcessResquest>(model);
+                _processService.CreateTestGameProcess(testGameProcessResquest);
+            }
+
+            return View(model);
+        }
+
         [HttpPost]
         public ActionResult Action(ActionEditModel model)
         {
@@ -46,55 +99,6 @@ namespace Bulka.Controllers
             }
 
             return RedirectToAction("Edit", new { id = model.GameProcessId });
-        }
-
-        public ActionResult Details(int id)
-        {
-            var vm = _processService.Edit(id);
-            return View(vm);
-        }
-
-        public ActionResult Edit(int id)
-        {
-            var vm = _processService.Edit(id);
-            return View(vm);
-        }
-
-        public ActionResult Create(int clubId)
-        {
-            var gameProcess = _processService.Create(clubId);
-            return RedirectToAction("Edit", new { id = gameProcess.Id });
-        }
-
-        public ActionResult End(int id)
-        {
-            _processService.StopProcess(id);
-
-            return RedirectToAction("Details", new { id = id });
-        }
-
-        [HttpGet]
-        public ActionResult CreateTestGameProcess()
-        {
-            var clubs = _clubService.GetAll();
-            var vm = new TestGameProcessViewModel()
-            {
-                DateTime = DateTime.Now,
-                ClubSelectListItems = clubs.Clubs.Select(c => new SelectListItem() {Value = c.Id.ToString(), Text = c.Name}).ToList()
-            };
-            return View(vm);
-        }
-
-        [HttpPost]
-        public ActionResult CreateTestGameProcess(TestGameProcessViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var testGameProcessResquest = Mapper.Map<TestGameProcessResquest>(model);
-                _processService.CreateTestGameProcess(testGameProcessResquest);
-            }
-
-            return View(model);
         }
     }
 }

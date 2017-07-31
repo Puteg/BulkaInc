@@ -1,5 +1,4 @@
-﻿@using BulkaBussinessLogic.Model.GameProcess
-@model GameProcessModel
+﻿@model Bulka.Models.GameProcess.GameProcessEditModel
 
 <div class="row">
     <div class="col-md-4 col-sm-4 col-xs-12">
@@ -38,8 +37,8 @@
                             <td>@Model.TotalOutput</td>
                         </tr>
                         <tr>
-                            <td>Разница</td>
-                            <td>@Model.Total</td>
+                            <td>Рейк "грязный"</td>
+                            <td> <strong style="color: #5a738e;"> @Model.Total </strong> </td>
                         </tr>
                         <tr>
                             <td>Продолжительность</td>
@@ -80,7 +79,7 @@
                                 {
                                     <li class="btn btn-default">
                                         <strong style="color: #5a738e;">@stuff.Amount</strong> <br>
-                                        <small style="color: #73879C;">@stuff.Time.ToShortTimeString()</small>
+                                        <small style="color: #73879C;">@stuff.Time</small>
                                     </li>
                                 }
                             </ul>
@@ -90,7 +89,7 @@
                             {
                                 <li class="btn btn-default">
                                     <strong style="color: #5a738e;">@item.OutPut.Amount</strong> <br>
-                                    <small style="color: #73879C;">@item.OutPut.Time.ToShortTimeString()</small>
+                                    <small style="color: #73879C;">@item.OutPut.Time</small>
                                 </li>
                             }
                         </td>

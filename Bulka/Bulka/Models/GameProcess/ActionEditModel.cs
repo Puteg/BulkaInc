@@ -1,4 +1,6 @@
-﻿namespace BulkaBussinessLogic.Model.GameProcess
+﻿using BulkaBussinessLogic.Model.GameProcess;
+
+namespace Bulka.Models.GameProcess
 {
     public class ActionEditModel
     {
@@ -7,12 +9,5 @@
         public decimal Amount { get; set; }
 
         public ActionType Type { get; set; }
-    }
-
-    public enum ActionType
-    {
-        Seat = 0,
-        Rebuy = 1,
-        SeatOut = 2
     }
 }

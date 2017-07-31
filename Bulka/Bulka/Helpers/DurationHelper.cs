@@ -16,7 +16,7 @@ namespace Bulka.Helpers
             return GetDuration(timeSpan);
         }
 
-        private static string GetDuration(TimeSpan timeSpan)
+        public static string GetDuration(this TimeSpan timeSpan)
         {
             return string.Format("{0:00}:{1:00}", (int)timeSpan.TotalHours, timeSpan.Minutes);
         }

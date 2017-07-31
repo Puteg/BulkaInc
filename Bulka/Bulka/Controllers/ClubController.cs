@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using AutoMapper;
 using Bulka.DataAccess;
+using Bulka.Models.Club;
+using Bulka.Models.Club.EditModel;
 using BulkaBussinessLogic.Implementation;
 using BulkaBussinessLogic.Model.Club;
 
@@ -21,29 +20,34 @@ namespace Bulka.Controllers
 
         public ActionResult Index()
         {
-            var vm = _clubService.GetAll();
+            var clubList = _clubService.GetAll();
+            var vm = Mapper.Map<ClubsViewModel>(clubList);
+
             return View(vm);
         }
 
         [HttpGet]
         public ActionResult Edit(int? id = null)
         {
-            var vm = _clubService.Get(id);
-            return View(vm);
+            var edit = _clubService.Get(id);
+            var editVm = Mapper.Map<ClubEditModel>(edit);
+
+            return View(editVm);
         }
 
         [HttpPost]
-        public ActionResult Edit(ClubEdit model)
+        public ActionResult Edit(ClubEditModel editModel)
         {
             if (ModelState.IsValid)
             {
+                var model = Mapper.Map<ClubEdit>(editModel);
                 if (_clubService.Edit(model))
                 {
                     return RedirectToAction("Index");
                 }
             }
 
-            return View(model);
+            return View(editModel);
         }
 
         [HttpGet]

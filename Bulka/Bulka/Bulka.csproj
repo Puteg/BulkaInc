@@ -205,15 +205,25 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="Helpers\DecimalExtentions.cs" />
     <Compile Include="Helpers\DurationHelper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mappings\ClubToViewModelMappingProfile.cs" />
     <Compile Include="Mappings\GameProcessToViewModelMappingProfile.cs" />
     <Compile Include="Mappings\PlayerToViewModelMappingProfile.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Club\ClubListItemViewModel.cs" />
+    <Compile Include="Models\Club\ClubsViewModel.cs" />
+    <Compile Include="Models\Club\EditModel\ClubEditModel.cs" />
+    <Compile Include="Models\GameProcess\ActionEditModel.cs" />
+    <Compile Include="Models\GameProcess\ClubsViewModel.cs" />
+    <Compile Include="Models\GameProcess\GameProcessEditModel.cs" />
+    <Compile Include="Models\GameProcess\GameProcessItemViewModel.cs" />
     <Compile Include="Models\GameProcess\HomeViewModel.cs" />
+    <Compile Include="Models\GameProcess\PlayerStuffViewModel.cs" />
     <Compile Include="Models\GameProcess\TestGameProcessViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -341,7 +351,7 @@
     <Content Include="Views\Club\Edit.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Profile\Edit.cshtml" />
-    <Content Include="Views\GameProcess\CreateTestGameProcess.cshtml" />
+    <Content Include="Views\GameProcess\CreateTest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

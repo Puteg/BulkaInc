@@ -1,6 +1,6 @@
-﻿namespace BulkaBussinessLogic.Model.Club
+﻿namespace Bulka.Models.Club.EditModel
 {
-    public class ClubEdit
+    public class ClubEditModel
     {
         public int Id { get; set; }
         public string Name { get; set; }

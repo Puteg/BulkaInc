@@ -1,9 +1,7 @@
-﻿using BulkaBussinessLogic.Model.GameProcess;
-
-namespace Bulka.Models.GameProcess
+﻿namespace Bulka.Models.GameProcess
 {
     public class HomeViewModel
     {
-        public ClubList ClubList { get; set; }
+        public ClubsViewModel ClubList { get; set; }
     }
 }

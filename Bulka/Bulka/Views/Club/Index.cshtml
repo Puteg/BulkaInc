@@ -1,4 +1,4 @@
-﻿@model BulkaBussinessLogic.Model.Club.ClubList
+﻿@model Bulka.Models.Club.ClubsViewModel
 
 @{
     ViewBag.Title = "Клубы";
@@ -32,7 +32,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.Clubs)
+                    @foreach (var item in Model.Items)
                     {
                         <tr>
                             <td>@item.Id</td>

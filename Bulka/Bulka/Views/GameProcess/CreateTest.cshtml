@@ -1,7 +1,7 @@
 ﻿@model Bulka.Models.GameProcess.TestGameProcessViewModel
 
 <div class="x_content">
-    @using (Html.BeginForm("CreateTestGameProcess", "GameProcess", FormMethod.Post, new { role = "form" }))
+    @using (Html.BeginForm("CreateTest", "GameProcess", FormMethod.Post, new { role = "form" }))
     {
         @Html.AntiForgeryToken()
 

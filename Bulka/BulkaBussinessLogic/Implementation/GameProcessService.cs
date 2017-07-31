@@ -6,6 +6,7 @@ using Bulka.DataAccess;
 using Bulka.DataModel;
 using Bulka.Repository;
 using BulkaBussinessLogic.Model.GameProcess;
+using Action = BulkaBussinessLogic.Model.GameProcess.Action;
 
 namespace BulkaBussinessLogic.Implementation
 {
@@ -55,28 +56,25 @@ namespace BulkaBussinessLogic.Implementation
             var gameProcess = _gameProcessRepository.GetAll().First(c => c.Id == id);
 
             var gameProcessItems = GetGameProcessItems(gameProcess);
-
             var totalInput = gameProcessItems.SelectMany(c => c.Input.Select(i => i.Amount).ToList()).Sum();
             var totalOutput = gameProcessItems.Where(c => c.OutPut != null).Select(c => c.OutPut.Amount).Sum();
-
-            TimeSpan subtract;
-            subtract = !gameProcess.EndDateTime.HasValue
+            var subtract = !gameProcess.EndDateTime.HasValue
                 ? DateTime.Subtract(gameProcess.StartDateTime.GetValueOrDefault())
                 : gameProcess.EndDateTime.Value.Subtract(gameProcess.StartDateTime.GetValueOrDefault());
-            var dirationTimeStr = string.Format("{0} ч. {1} мин.", (int)subtract.TotalHours, subtract.Minutes);
+            
 
             var vm = new GameProcessModel
             {
                 Items = gameProcessItems,
 
-                DirationTime = dirationTimeStr,
+                DirationTime = subtract,
                 PlayerCount = gameProcessItems.Count,
-                TotalInput = totalInput.ToString("0.##"),
-                TotalOutput = totalOutput.ToString("0.##"),
-                Total = (totalInput - totalOutput).ToString("0.##"),
+                TotalInput = totalInput,
+                TotalOutput = totalOutput,
+                Total = (totalInput - totalOutput),
 
                 Id = id,
-                EditModel = new ActionEditModel {GameProcessId = id},
+                EditModel = new Action {GameProcessId = id},
                 Players = player.Select(c => new SelectListItem {Text = c.Name, Value = c.Id.ToString()}).ToList()
             };
 
@@ -172,20 +170,18 @@ namespace BulkaBussinessLogic.Implementation
                     var totalInput = gameProcessItems.SelectMany(c => c.Input.Select(i => i.Amount).ToList()).Sum();
                     var totalOutput = gameProcessItems.Where(c => c.OutPut != null).Select(c => c.OutPut.Amount).Sum();
 
-                    TimeSpan subtract;
-                    subtract = !gameProcess.EndDateTime.HasValue
+                    var subtract = !gameProcess.EndDateTime.HasValue
                         ? DateTime.Subtract(gameProcess.StartDateTime.GetValueOrDefault())
                         : gameProcess.EndDateTime.Value.Subtract(gameProcess.StartDateTime.GetValueOrDefault());
-                    var dirationTimeStr = string.Format("{0} ч. {1} мин.", (int)subtract.TotalHours, subtract.Minutes);
 
                     var item = new GameProcessListItem
                     {
                         Id = gameProcess.Id,
-                        DateTime = gameProcess.StartDateTime.GetValueOrDefault().ToShortDateString(),
-                        DirationTime = dirationTimeStr,
+                        DateTime = gameProcess.StartDateTime.GetValueOrDefault(),
+                        DirationTime = subtract,
                         PlayerCount = gameProcessItems.Count,
-                        TotalInput = totalInput.ToString("0.##"),
-                        TotalOutput = totalOutput.ToString("0.##"),
+                        TotalInput = totalInput,
+                        TotalOutput = totalOutput,
                         Total = (totalInput - totalOutput)
                     };
                     clubItem.Items.Add(item);
@@ -193,8 +189,7 @@ namespace BulkaBussinessLogic.Implementation
 
                 clubItem.PlayersCount = clubItem.Items.Sum(c => c.PlayerCount);
                 clubItem.Total = clubItem.Items.Sum(c => c.Total);
-
-                clubItem.Items = clubItem.Items.OrderByDescending(c => c.DateTime).ToList();
+                
                 gameProcessList.Clubs.Add(clubItem);
             }
 
