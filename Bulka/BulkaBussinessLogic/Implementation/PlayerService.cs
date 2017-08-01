@@ -4,6 +4,7 @@ using Bulka.DataAccess;
 using Bulka.DataModel;
 using Bulka.DataModel.Enum;
 using Bulka.Repository;
+using BulkaBussinessLogic.Model.GameProcess;
 
 namespace BulkaBussinessLogic.Implementation
 {
@@ -16,6 +17,12 @@ namespace BulkaBussinessLogic.Implementation
         {
             _playersRepository = new PlayersRepository(context);
             _playerSessionRepository = new PlayerSessionRepository(context);
+        }
+
+        public List<PlayerItem> Search(string query)
+        {
+            var players = _playersRepository.GetAll().Where(c => c.Name.Contains(query)).ToList();
+            return players.Select(c => new PlayerItem() {Id = c.Id.ToString(), ImageUrl = c.ImageUrl, Text = c.Name}).ToList();
         }
 
         public List<PlayerSession> GetSessions(int playerId)

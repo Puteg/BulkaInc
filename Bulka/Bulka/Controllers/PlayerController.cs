@@ -1,13 +1,18 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using AutoMapper;
 using Bulka.DataAccess;
 using Bulka.DataModel;
 using Bulka.Models;
+using Bulka.Models.GameProcess;
 using Bulka.Models.Player;
 using Bulka.Repository;
 using BulkaBussinessLogic.Implementation;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Bulka.Controllers
 {
@@ -66,7 +71,7 @@ namespace Bulka.Controllers
         [HttpGet]
         public ActionResult New()
         {
-            return View("Edit", new PlayerEditModel(){ImageUrl = "/images/user.png"});
+            return View("Edit", new PlayerEditModel() {ImageUrl = "/images/user.png"});
         }
 
         [HttpGet]
@@ -130,7 +135,7 @@ namespace Bulka.Controllers
                 }
 
                 _playersRepository.Save();
-                return RedirectToAction("Profile", new { @id = player.Id});
+                return RedirectToAction("Profile", new {@id = player.Id});
             }
 
             return View(model);
@@ -143,6 +148,15 @@ namespace Bulka.Controllers
             _playersRepository.Save();
 
             return RedirectToAction("All");
+        }
+
+        public JsonResult PlayerSerch(string query)
+        {
+            var players = _playerService.Search(query);
+            var playersViewModel = Mapper.Map<List<PlayerItemViewItem>>(players);
+            var jsonData = playersViewModel.Select(c => new {id = c.Id, text = c.Text, image = c.ImageUrl});
+              
+            return Json(data: jsonData, behavior: JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Bulka.Models.GameProcess
         public GameProcessEditModel()
         {
             Items = new List<GameProcessItemViewModel>();
-            Players = new List<SelectListItem>();
+            Players = new List<PlayerItemViewItem>();
             EditModel = new ActionEditModel();
         }
 
@@ -20,7 +20,7 @@ namespace Bulka.Models.GameProcess
         public string DirationTime { get; set; }
 
         public List<GameProcessItemViewModel> Items { get; set; }
-        public List<SelectListItem> Players { get; set; }
+        public List<PlayerItemViewItem> Players { get; set; }
 
         public ActionEditModel EditModel { get; set; }
     }

@@ -20,7 +20,7 @@
             </div>
             <div class="x_content">
                 <br>
-                @using (Html.BeginForm("Action", "GameProcess", FormMethod.Post, new { role = "form", @class = "form-label-left" }))
+                @using (Html.BeginForm("Action", "GameProcess", FormMethod.Post, new { role = "form" }))
                 {
                     @Html.AntiForgeryToken()
 
@@ -33,7 +33,7 @@
                                 Игрок <span class="required">*</span>
                             </label>
                             <div class="col-md-9 col-sm-9 col-xs-12">
-                                @Html.DropDownListFor(model => model.EditModel.PlayerId, Model.Players, null, htmlAttributes: new { @class = "form-control col-md-9 col-xs-12" })
+                                @Html.DropDownListFor(model => model.EditModel.PlayerId, new List<SelectListItem>(), null, htmlAttributes: new { @class = "form-control col-md-9 col-xs-12 input-lg" })
                                 @Html.ValidationMessageFor(model => model.EditModel.PlayerId, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -165,5 +165,50 @@
     </div>
 </div>
 
+@section scripts
+{
+
+    <style>
+        .img-flag {
+            height: 25px;
+            width: 25px;
+        }
+    </style>
+
+    <link href="/Content/css/select2.min.css" rel="stylesheet"/>
+    <script src="/Scripts/select2.min.js"></script>
+    <script src="/Scripts/i18n/ru.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function() {
+            function formatState(state) {
+                if (!state.id) { return state.text; }
+                var $state = $(
+                    '<span><img src="' + state.image + '" class="img-flag"/> ' + state.text + '</span>'
+                );
+                return $state;
+            };
+
+            $("#EditModel_PlayerId").select2({
+                placeholder: "Выбери игрока",
+                language: 'ru',
+                templateResult: formatState,
+                templateSelection: formatState,
+                ajax: {
+                    url: function(params) {
+                        return '@Url.Action("PlayerSerch", "Player")?query=' + params.term;
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: data
+                        };
+                    },
+                    cache: true,
+                    delay: 500
+                }
+
+            });
+        });
+    </script>
+}
 
 

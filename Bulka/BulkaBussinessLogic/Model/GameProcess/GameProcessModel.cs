@@ -9,7 +9,7 @@ namespace BulkaBussinessLogic.Model.GameProcess
         public GameProcessModel()
         {
             Items = new List<GameProcessItem>();
-            Players = new List<SelectListItem>();
+            Players = new List<PlayerItem>();
         }
 
         public int Id { get; set; }
@@ -21,9 +21,16 @@ namespace BulkaBussinessLogic.Model.GameProcess
         public TimeSpan DirationTime { get; set; }
 
         public List<GameProcessItem> Items { get; set; }
-        public List<SelectListItem> Players { get; set; }
+        public List<PlayerItem> Players { get; set; }
 
         public Action EditModel { get; set; }
+    }
+
+    public class PlayerItem
+    {
+        public string Id { get; set; }
+        public string Text { get; set; }
+        public string ImageUrl { get; set; }
     }
 
     public class GameProcessItem
