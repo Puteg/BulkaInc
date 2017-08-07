@@ -98,7 +98,7 @@
                                 @*<span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> Последняя неделя</span>*@
                             </div>
                         </div>
-                        <table id="club_@Model.Sessions.IndexOf(tab)" class="table table-striped no-margin">
+                        <table id="club_@Model.Sessions.IndexOf(tab)" class="table display table-striped no-margin">
                             <thead>
                                 <tr>
                                     <th>Дата</th>
@@ -135,13 +135,13 @@
 @section scripts
 {
     <script>
-        $(function () {
+        $(function() {
             $('#home-0').click();
             $('.progress-bar').progressbar();
-            @foreach (var tab in Model.Sessions)
+            $('table.display').DataTable(
             {
-                @Html.Raw("$('#club_" + Model.Sessions.IndexOf(tab) + "').DataTable(); ");
-            }
+                "order": [[0, "desc"]]
+            });
         });
     </script>
 }

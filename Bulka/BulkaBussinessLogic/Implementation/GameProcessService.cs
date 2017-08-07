@@ -198,9 +198,13 @@ namespace BulkaBussinessLogic.Implementation
 
         public bool CreateTestGameProcess(TestGameProcessResquest request)
         {
+            var step = 500;
             var rand = new Random();
             var players = new List<Player>();
             var allPlayers = _playersRepository.GetAll().ToList();
+
+            request.MinAmount /= step;
+            request.MaxAmount /= step;
 
             for (int j = 0; j < request.DayCount; j++)
             {
@@ -217,7 +221,7 @@ namespace BulkaBussinessLogic.Implementation
 
                 foreach (var player in players)
                 {
-                    Seat(player.Id, rand.Next(request.MinAmount, request.MaxAmount), gameProcess.Id);
+                    Seat(player.Id, GetAmount(rand, request, step), gameProcess.Id);
                 }
 
                 foreach (var player in players)
@@ -227,7 +231,7 @@ namespace BulkaBussinessLogic.Implementation
                     {
                         dateTime = dateTime.AddMinutes(rand.Next(10, 25));
                         UpdateDateTime(dateTime);
-                        Rebuy(player.Id, rand.Next(request.MinAmount, request.MaxAmount), gameProcess.Id);
+                        Rebuy(player.Id, GetAmount(rand, request, step), gameProcess.Id);
                     }
                 }
 
@@ -238,13 +242,18 @@ namespace BulkaBussinessLogic.Implementation
                     var isOut = rand.Next(0, 100) < 45;
                     if (isOut)
                     {
-                        SeatOut(player.Id, rand.Next(request.MinAmount, request.MaxAmount*2), gameProcess.Id);
+                        SeatOut(player.Id, GetAmount(rand, request, step), gameProcess.Id);
                     }
                 }
 
                 StopProcess(gameProcess.Id);
             }
             return true;
+        }
+
+        private int GetAmount(Random rand, TestGameProcessResquest request, int amountStep)
+        {
+            return rand.Next(request.MinAmount, request.MaxAmount*2)*amountStep;
         }
 
         private void UpdateDateTime(DateTime dateTime)

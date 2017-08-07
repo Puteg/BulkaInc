@@ -23,7 +23,7 @@ namespace Bulka.Mappings
                 .ForMember(g => g.Profit, map => map.MapFrom(vm => (vm.Sum(c => c.Output) - vm.Sum(c => c.Input)).ToString(true)));
 
             CreateMap<PlayerSession, PlayerSessionItemViewModel>()
-                .ForMember(g => g.DateTime, map => map.MapFrom(vm => vm.Begin.ToLongDateString()))
+                .ForMember(g => g.DateTime, map => map.MapFrom(vm => vm.Begin.ToString("dd.MM")))
                 .ForMember(g => g.Input, map => map.MapFrom(vm => vm.Input.ToString(true)))
                 .ForMember(g => g.Output, map => map.MapFrom(vm => vm.Output.ToString(true)))
                 .ForMember(g => g.Duration, map => map.MapFrom(vm => DurationHelper.GetDuration(vm.Begin, vm.End)));

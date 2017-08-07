@@ -42,33 +42,33 @@
                         </a>
                     </div>
                     <div class="col-md-8 col-sm-8 col-xs-12">
-                        <table id="club_@Model.ClubList.Clubs.IndexOf(club)" class="table">
+                        <table id="club_@Model.ClubList.Clubs.IndexOf(club)" class="table display table-hover">
                             <thead>
-                            <tr>
-                                <th>Дата</th>
-                                <th>Кол-во игроков</th>
-                                <th>Время</th>
-                                <th>Вход</th>
-                                <th>Выход</th>
-                                <th>Разница</th>
-                                <th>Действия</th>
-                            </tr>
+                                <tr>
+                                    <th>Дата</th>
+                                    <th>Кол-во игроков</th>
+                                    <th>Время</th>
+                                    <th>Вход</th>
+                                    <th>Выход</th>
+                                    <th>Разница</th>
+                                    <th>Действия</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            @foreach (var item in club.Items)
-                            {
-                                <tr>
-                                    <td>@item.DateTime</td>
-                                    <td class="text-center">@item.PlayerCount</td>
-                                    <td>@item.DirationTime</td>
-                                    <td>@item.TotalInput</td>
-                                    <td>@item.TotalOutput</td>
-                                    <td>@item.Total</td>
-                                    <td>
-                                        <a href="@Url.Action("Details", "GameProcess", new {id = item.Id})" class=""> Открыть </a>
-                                    </td>
-                                </tr>
-                            }
+                                @foreach (var item in club.Items)
+                                {
+                                    <tr data-id="@item.Id">
+                                        <td>@item.DateTime</td>
+                                        <td class="text-center">@item.PlayerCount</td>
+                                        <td>@item.DirationTime</td>
+                                        <td>@item.TotalInput</td>
+                                        <td>@item.TotalOutput</td>
+                                        <td>@item.Total</td>
+                                        <td>
+                                            <a href="@Url.Action("Details", "GameProcess", new {id = item.Id})" class=""> Открыть </a>
+                                        </td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -81,11 +81,10 @@
 @section scripts
 {
     <script>
-        $(function () {
-            @foreach (var club in Model.ClubList.Clubs)
-            {
-                @Html.Raw("$('#club_" + @Model.ClubList.Clubs.IndexOf(club) + "').DataTable(); ");
-            }
+    $(function () {
+        $('table.display').DataTable({
+            "order": [[0, "desc"]]
         });
+    });
     </script>
 }

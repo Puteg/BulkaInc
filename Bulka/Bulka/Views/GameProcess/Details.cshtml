@@ -25,7 +25,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Количество играков</td>
+                            <td>Количество игроков</td>
                             <td>@Model.PlayerCount</td>
                         </tr>
                         <tr>
@@ -58,7 +58,7 @@
                     <th style="width: 10%"></th>
                     <th style="width: 20%">Игрок</th>
                     <th>Вход</th>
-                    <th style="width: 20%">Выход</th>
+                    <th style="width: 10%">Выход</th>
                 </tr>
             </thead>
             <tbody>
@@ -77,21 +77,25 @@
                             <ul class="list-inline">
                                 @foreach (var stuff in item.Input)
                                 {
-                                    <li class="btn btn-default">
-                                        <strong style="color: #5a738e;">@stuff.Amount</strong> <br>
-                                        <small style="color: #73879C;">@stuff.Time</small>
+                                    <li>
+
+                                        <strong>@stuff.Amount</strong> <br>
+                                        <small>@stuff.Time</small>
+
                                     </li>
                                 }
                             </ul>
                         </td>
                         <td>
-                            @if (item.OutPut != null)
-                            {
-                                <li class="btn btn-default">
-                                    <strong style="color: #5a738e;">@item.OutPut.Amount</strong> <br>
-                                    <small style="color: #73879C;">@item.OutPut.Time</small>
-                                </li>
-                            }
+                            <ul class="list-inline">
+                                @if (item.OutPut != null)
+                                {
+                                    <li>
+                                        <strong>@item.OutPut.Amount</strong> <br>
+                                        <small>@item.OutPut.Time</small>
+                                    </li>
+                                }
+                            </ul>
                         </td>
                     </tr>
                 }
@@ -99,6 +103,3 @@
         </table>
     </div>
 </div>
-
-
-

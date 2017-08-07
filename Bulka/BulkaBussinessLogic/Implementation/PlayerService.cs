@@ -21,8 +21,14 @@ namespace BulkaBussinessLogic.Implementation
 
         public List<PlayerItem> Search(string query)
         {
-            var players = _playersRepository.GetAll().Where(c => c.Name.Contains(query)).ToList();
-            return players.Select(c => new PlayerItem() {Id = c.Id.ToString(), ImageUrl = c.ImageUrl, Text = c.Name}).ToList();
+            var players = _playersRepository.GetAll().Where(c => c.Name.Contains(query) || c.Phone == query).ToList();
+            return players.Select(c => new PlayerItem
+            {
+                Id = c.Id.ToString(), 
+                Text = c.Name,
+                Phone = c.Phone,
+                ImageUrl = c.ImageUrl, 
+            }).ToList();
         }
 
         public List<PlayerSession> GetSessions(int playerId)

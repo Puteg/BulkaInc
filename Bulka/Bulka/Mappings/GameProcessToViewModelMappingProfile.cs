@@ -37,7 +37,7 @@ namespace Bulka.Mappings
                 .ForMember(g => g.Items, map => map.MapFrom(vm => Mapper.Map<List<GameProcessListItemViewModel>>(vm.Items)));
 
             CreateMap<GameProcessListItem, GameProcessListItemViewModel>()
-                .ForMember(g => g.DateTime, map => map.MapFrom(vm => vm.DateTime.ToLongDateString()))
+                .ForMember(g => g.DateTime, map => map.MapFrom(vm => vm.DateTime.ToString("dd.MM")))
                 .ForMember(g => g.TotalInput, map => map.MapFrom(vm => vm.TotalInput.ToString(true)))
                 .ForMember(g => g.TotalOutput, map => map.MapFrom(vm => vm.TotalOutput.ToString(true)))
                 .ForMember(g => g.Total, map => map.MapFrom(vm => vm.Total.ToString(true)))
