@@ -36,7 +36,7 @@
         </ul>
 
         <a href="@Url.Action("Edit", "Player", new {id = @Model.Id})" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Редактировать</a>
-        <a href="@Url.Action("All", "Player", new {id = @Model.Id})" class="btn btn-default"><i class="fa fa-edit m-right-xs"></i>Назад к списку</a>
+        <a href="javascript:history.go(-1)" class="btn btn-default"><i class="fa fa-edit m-right-xs"></i>Назад к списку</a>
         <br/>
 
         <h4>Посещение</h4>

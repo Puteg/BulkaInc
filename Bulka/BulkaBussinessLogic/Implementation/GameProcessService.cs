@@ -75,7 +75,7 @@ namespace BulkaBussinessLogic.Implementation
 
                 Id = id,
                 EditModel = new Action {GameProcessId = id},
-                Players = player.Select(c => new PlayerItem { Text = c.Name, Id = c.Id.ToString(), ImageUrl = c.ImageUrl}).ToList()
+                Players = player.Select(c => new PlayerItem { Name = c.Name, Id = c.Id.ToString(), ImageUrl = c.ImageUrl}).ToList()
             };
 
             return vm;

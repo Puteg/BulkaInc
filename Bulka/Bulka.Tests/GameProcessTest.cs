@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Bulka.DataAccess;
-using Bulka.DataModel;
 using BulkaBussinessLogic.Implementation;
-using BulkaBussinessLogic.Model.Club;
 using BulkaBussinessLogic.Model.GameProcess;
 using NUnit.Framework;
 
@@ -13,6 +9,15 @@ namespace Bulka.Tests
     [TestFixture]
     class GameProcessTest
     {
+        [Test]
+        public void StringTest()
+        {
+            long numb = 7966333221;
+            var str = @String.Format("{0:+# (###) ###-##-##}", numb);
+
+            Assert.NotNull(str);
+        }
+
         [Test]
         public void ProcessTest()
         {

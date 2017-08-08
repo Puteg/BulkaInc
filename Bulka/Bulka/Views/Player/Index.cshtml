@@ -1,0 +1,145 @@
+﻿@model List<Bulka.Models.Player.PlayerProfileItemViewModel>
+
+@{
+    ViewBag.Title = "Игроки";
+}
+
+<div class="row">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>
+                Игроки <small></small>
+            </h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li>
+                    <a id="list" ><span class="glyphicon glyphicon-th-list"></span></a>
+                </li>
+                <li>
+                    <a id="th"><span class="glyphicon glyphicon-th"></span></a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12 list">
+                    <div class="clearfix"></div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Название</th>
+                                <th>Телефон</th>
+                                <th>Заходов</th>
+                                <th>Последний</th>
+                                <th>Время</th>
+                                <th>Вход</th>
+                                <th>Выход</th>
+                                <th>Итого</th>
+                                <th style="width: 10%">Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var player in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <img src="@player.ImageUrl" style="width: 40px;" alt="img">
+                                    </td>
+                                    <td>@player.Name</td>
+                                    <td>@player.Phone</td>
+                                    <td>@player.GameCount</td>
+                                    <td>@player.LastGameDate</td>
+                                    <td>@player.Time</td>
+                                    <td>@player.Input</td>
+                                    <td>@player.Output</td>
+                                    <td>@player.Total</td>
+                                    <td>
+                                        <a href="@Url.Action("Profile", "Player", new {id = player.Id})"> Смотреть </a>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="clearfix"></div>
+                @foreach (var player in Model)
+                {
+                    <div class="col-md-4 col-sm-4 col-xs-12 profile_details th" style="display: none">
+                        <div class="well profile_view">
+                            <div class="col-sm-12">
+                                <h2>
+                                    @player.Name <small style="float: right">"@player.LastGameClub" @player.LastGameDate</small>
+                                </h2>
+                                <div class="left col-xs-7">
+                                    <ul class="list-unstyled">
+                                        <li><i class="fa fa-phone"></i> Тел.: <a href="tel:@player.Phone">@player.Phone</a></li>
+                                        <li><i class="fa fa-vk"></i> Вконтакте: <a href="@player.Vk">Ссылка</a> </li>
+                                        <li><i class="fa fa-building"></i> Адрес: @player.Address</li>
+                                    </ul>
+                                    <p>
+                                        <strong>Информация: </strong> @player.AdditionInfo
+                                    </p>
+                                </div>
+                                <div class="right col-xs-5 text-center">
+                                    <img src="@player.ImageUrl" hralt="" class="img-circle img-responsive">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 bottom">
+                                <div class="col-xs-12 col-sm-12 emphasis">
+                                    <ul class="list-inline">
+                                        <li>
+                                            <small>Время</small> <br />
+                                            <strong>@player.Time</strong>
+                                        </li>
+                                        <li>
+                                            <small>Вход</small> <br />
+                                            <strong>@player.Input</strong>
+                                        </li>
+                                        <li>
+                                            <small>Выход</small> <br />
+                                            <strong>@player.Output</strong>
+                                        </li>
+                                        <li>
+                                            <small>Доход</small> <br />
+                                            <strong>@player.Total</strong>
+                                        </li>
+
+                                        <li style="float: right">
+                                            <a href="@Url.Action("Profile", "Player", new {id = player.Id})" type="button" class="btn btn-primary btn-default">
+                                                Профиль
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+    $(function () {
+        $('table').DataTable();
+
+        $("#th").on("click", function () {
+            $(".th").toggle();
+        });
+
+        $("#list").on("click", function () {
+            $(".list").toggle();
+        });
+
+
+    });
+    </script>
+}

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Bulka.DataAccess;
 using Bulka.DataModel;
@@ -22,18 +23,22 @@ namespace BulkaBussinessLogic.Implementation
         public List<PlayerItem> Search(string query)
         {
             var players = _playersRepository.GetAll().Where(c => c.Name.Contains(query) || c.Phone == query).ToList();
-            return players.Select(c => new PlayerItem
+            return players.Select(c =>
             {
-                Id = c.Id.ToString(), 
-                Text = c.Name,
-                Phone = c.Phone,
-                ImageUrl = c.ImageUrl, 
+                var phone = (c.Phone ?? "0").Replace("+", "").Replace(" ", "");
+                return new PlayerItem
+                {
+                    Id = c.Id.ToString(),
+                    Name = c.Name,
+                    Phone = long.Parse(phone),
+                    ImageUrl = c.ImageUrl,
+                };
             }).ToList();
         }
 
         public List<PlayerSession> GetSessions(int playerId)
         {
-            var playerSessions = _playerSessionRepository.GetAll().Where(c => c.PlayerId == playerId).OrderByDescending(c => c.Begin).ToList();
+            var playerSessions = _playerSessionRepository.GetAll().Where(c => c.PlayerId == playerId).ToList();
             return playerSessions;
         }
 
@@ -55,6 +60,59 @@ namespace BulkaBussinessLogic.Implementation
             _playersRepository.Save();
 
             return newPlayer;
+        }
+
+        public List<PlayerItem> GetAll()
+        {
+            var players = _playersRepository.GetAll().ToList();
+            var playerSessions = _playerSessionRepository.GetAll().ToList();
+
+            var playersList = players.Select(c =>
+            {
+                PlayerItem player;
+                var sessions = playerSessions.Where(p => p.PlayerId == c.Id).ToList();
+                var phone = (c.Phone ?? "0").Replace("+", "").Replace(" ", "");
+
+                if (sessions.Any())
+                {
+                    var last = sessions.OrderBy(s => s.End).Take(1).First();
+                    player = new PlayerItem
+                    {
+                        Id = c.Id.ToString(),
+                        Name = c.Name,
+                        Phone = long.Parse(phone),
+                        Vk = c.Vk,
+                        Address = c.Address,
+                        AdditionInfo = c.AdditionInfo,
+                        ImageUrl = c.ImageUrl,
+
+                        GameCount = sessions.Count(),
+                        Input = sessions.Sum(s => s.Input),
+                        Output = sessions.Sum(s => s.Output),
+                        Time = new TimeSpan(sessions.Sum(s => s.End.Subtract(s.Begin).Ticks)/sessions.Count()),
+                        Total = sessions.Sum(s => s.Output - s.Input),
+                        LastGameDate = last.End,
+                        LastGameClub = last.Club.Name
+                    };
+                }
+                else
+                {
+                    player = new PlayerItem
+                    {
+                        Id = c.Id.ToString(),
+                        Name = c.Name,
+                        Phone = long.Parse(phone),
+                        Vk = c.Vk,
+                        Address = c.Address,
+                        AdditionInfo = c.AdditionInfo,
+                        ImageUrl = c.ImageUrl,
+                    };
+                }
+
+                return player;
+            }).ToList();
+
+            return playersList;
         }
     }
 }

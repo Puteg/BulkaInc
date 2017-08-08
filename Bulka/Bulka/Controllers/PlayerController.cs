@@ -6,10 +6,10 @@ using AutoMapper;
 using Bulka.DataAccess;
 using Bulka.DataModel;
 using Bulka.Models;
-using Bulka.Models.GameProcess;
 using Bulka.Models.Player;
 using Bulka.Repository;
 using BulkaBussinessLogic.Implementation;
+using PlayerItemViewModel = Bulka.Models.GameProcess.PlayerItemViewModel;
 
 namespace Bulka.Controllers
 {
@@ -59,10 +59,12 @@ namespace Bulka.Controllers
             return View(vm);
         }
 
-        public ActionResult All()
+        public ActionResult Index()
         {
-            var players = _playersRepository.GetAll().OrderByDescending(c => c.Id).ToList();
-            return View(players);
+            var players = _playerService.GetAll();
+            var playersViewModel = Mapper.Map<List<PlayerProfileItemViewModel>>(players);
+
+            return View(playersViewModel);
         }
 
         [HttpGet]
@@ -150,7 +152,7 @@ namespace Bulka.Controllers
         public JsonResult PlayerSerch(string query)
         {
             var players = _playerService.Search(query);
-            var playersViewModel = Mapper.Map<List<PlayerItemViewItem>>(players);
+            var playersViewModel = Mapper.Map<List<PlayerItemViewModel>>(players);
             var jsonData = playersViewModel.Select(c => new
             {
                 id = c.Id, 

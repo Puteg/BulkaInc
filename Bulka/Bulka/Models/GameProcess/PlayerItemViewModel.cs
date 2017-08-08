@@ -1,6 +1,6 @@
 ﻿namespace Bulka.Models.GameProcess
 {
-    public class PlayerItemViewItem
+    public class PlayerItemViewModel
     {
         public string Id { get; set; }
         public string Text { get; set; }

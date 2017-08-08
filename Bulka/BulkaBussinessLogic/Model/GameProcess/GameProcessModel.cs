@@ -29,9 +29,20 @@ namespace BulkaBussinessLogic.Model.GameProcess
     public class PlayerItem
     {
         public string Id { get; set; }
-        public string Text { get; set; }
-        public string Phone { get; set; }
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public long Phone { get; set; }
+        public string Vk { get; set; }
         public string ImageUrl { get; set; }
+        public string AdditionInfo { get; set; }
+
+        public DateTime LastGameDate { get; set; }
+        public string LastGameClub { get; set; }
+        public int GameCount { get; set; }
+        public TimeSpan Time { get; set; }
+        public decimal Input { get; set; }
+        public decimal Output { get; set; }
+        public decimal Total { get; set; }
     }
 
     public class GameProcessItem

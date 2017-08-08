@@ -223,12 +223,13 @@
     <Compile Include="Models\GameProcess\GameProcessEditModel.cs" />
     <Compile Include="Models\GameProcess\GameProcessItemViewModel.cs" />
     <Compile Include="Models\GameProcess\HomeViewModel.cs" />
-    <Compile Include="Models\GameProcess\PlayerItemViewItem.cs" />
+    <Compile Include="Models\GameProcess\PlayerItemViewModel.cs" />
     <Compile Include="Models\GameProcess\PlayerStuffViewModel.cs" />
     <Compile Include="Models\GameProcess\TestGameProcessViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PlayerEditModel.cs" />
+    <Compile Include="Models\Player\PlayerProfileItemViewModel.cs" />
     <Compile Include="Models\Player\PlayerProfileViewModel.cs" />
     <Compile Include="Models\Player\PlayerSessionItemViewModel.cs" />
     <Compile Include="Models\Player\PlayerSessionListViewModel.cs" />
@@ -390,7 +391,7 @@
     <Content Include="Views\GameProcess\Index.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\Player\All.cshtml">
+    <Content Include="Views\Player\Index.cshtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\Player\Edit.cshtml">
