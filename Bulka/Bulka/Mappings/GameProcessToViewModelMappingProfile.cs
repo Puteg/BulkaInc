@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
 using Bulka.Helpers;
@@ -35,7 +36,12 @@ namespace Bulka.Mappings
 
             CreateMap<ClubItem, ClubItemViewModel>()
                 .ForMember(g => g.Total, map => map.MapFrom(vm => vm.Total.ToString(true)))
+                .ForMember(g => g.Started, map => map.MapFrom(vm => Mapper.Map<List<GameProcessStartedViewModel>>(vm.Items.Where(c => !c.IsFinish).ToList())))
                 .ForMember(g => g.Items, map => map.MapFrom(vm => Mapper.Map<List<GameProcessListItemViewModel>>(vm.Items)));
+
+            CreateMap<GameProcessListItem, GameProcessStartedViewModel>()
+                .ForMember(g => g.DateTime, map => map.MapFrom(vm => vm.DateTime.ToString("dd.MM")))
+                .ForMember(g => g.DirationTime, map => map.MapFrom(vm => vm.DirationTime.GetDuration()));
 
             CreateMap<GameProcessListItem, GameProcessListItemViewModel>()
                 .ForMember(g => g.DateTime, map => map.MapFrom(vm => vm.DateTime.ToString("dd.MM")))

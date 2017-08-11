@@ -18,11 +18,12 @@ namespace Bulka.Controllers
 
         public ActionResult Index()
         {
-            var clubs = Mapper.Map<ClubsViewModel>(_service.GetAll());
+            var clubs = _service.GetAll();
+            var clubsVm = Mapper.Map<ClubsViewModel>(clubs);
 
             var vm = new HomeViewModel()
             {
-                ClubList = clubs
+                ClubList = clubsVm
             };
             
             return View(vm);

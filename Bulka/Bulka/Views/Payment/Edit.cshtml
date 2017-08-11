@@ -1,0 +1,71 @@
+﻿@model Bulka.Controllers.PaymentEditModel
+
+<div class="x_panel">
+    <div class="x_title">
+        <h2>Редактирование <small></small></h2>
+        <ul class="nav navbar-right panel_toolbox">
+            <li>
+                <a href="@Url.Action("Delete","Payment", new { id = @Model.Id })"class="close-link"><i class="fa fa-close"></i> Удалить</a>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+        @using (Html.BeginForm("Edit", "Payment", FormMethod.Post, new { role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Id)
+
+                <div class="col-md-8 col-sm-8 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            Отправитель
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            @Html.TextBoxFor(model => model.From, null, htmlAttributes: new { @class = "form-control col-md-7 col-xs-12", @readonly = "readonly" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            Получатель
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            @Html.TextBoxFor(model => model.To, null, htmlAttributes: new { @class = "form-control col-md-7 col-xs-12", @readonly = "readonly" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            Дата
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            @Html.TextBoxFor(model => model.DateTime, null, htmlAttributes: new { @class = "form-control col-md-7 col-xs-12" })
+                            @Html.ValidationMessageFor(model => model.DateTime, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                            Сумма
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            @Html.TextBoxFor(model => model.Amount, null, htmlAttributes: new { @class = "form-control col-md-7 col-xs-12" })
+                            @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <small style="text-align: right">
+                        
+                    </small>
+                    <div class="form-group">
+                        <div class="col-md-6 col-md-offset-3">
+                            <button type="reset" class="btn btn-primary">Отменить</button>
+                            <button id="send" type="submit" class="btn btn-success">Cохранить</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

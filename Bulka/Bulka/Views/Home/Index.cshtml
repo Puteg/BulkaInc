@@ -36,6 +36,34 @@
                                 <h2>@club.Total</h2>
                             </div>
                         </div>
+
+                        @if (club.Started.Any())
+                        {
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Дата</th>
+                                    <th>Время</th>
+                                    <th>Действия</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                @foreach (var item in club.Started)
+                                {
+
+                                    <tr>
+                                        <td>@item.DateTime</td>
+                                        <td>@item.DirationTime</td>
+                                        <td>
+                                            <a href="@Url.Action("Edit", "GameProcess", new {id = item.Id})" class=""> Продолжить </a>
+                                        </td>
+                                    </tr>
+                                }
+                                <tbody>
+                            </table>
+                        }
+
                         <div class="ln_solid"></div>
                         <a href="@Url.Action("Create", "GameProcess", new {clubId = @club.Id})" class="btn btn-lg btn-success center-block">
                             Создать

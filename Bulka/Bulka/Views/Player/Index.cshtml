@@ -128,18 +128,20 @@
 @section scripts
 {
     <script>
-    $(function () {
-        $('table').DataTable();
+        $(function() {
+            $('table').DataTable({
+                "order": [[5, "desc"]]
+            });
 
-        $("#th").on("click", function () {
-            $(".th").toggle();
+            $("#th").on("click", function() {
+                $(".th").toggle();
+            });
+
+            $("#list").on("click", function() {
+                $(".list").toggle();
+            });
+
+
         });
-
-        $("#list").on("click", function () {
-            $(".list").toggle();
-        });
-
-
-    });
     </script>
 }

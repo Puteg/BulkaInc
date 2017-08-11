@@ -74,7 +74,7 @@ namespace BulkaBussinessLogic.Implementation
                 Total = (totalInput - totalOutput),
 
                 Id = id,
-                EditModel = new Action {GameProcessId = id},
+                EditModel = new Action {GameProcessId = id, Amount = 6000},
                 Players = player.Select(c => new PlayerItem { Name = c.Name, Id = c.Id.ToString(), ImageUrl = c.ImageUrl}).ToList()
             };
 
@@ -182,7 +182,8 @@ namespace BulkaBussinessLogic.Implementation
                         PlayerCount = gameProcessItems.Count,
                         TotalInput = totalInput,
                         TotalOutput = totalOutput,
-                        Total = (totalInput - totalOutput)
+                        Total = (totalInput - totalOutput),
+                        IsFinish = gameProcess.EndDateTime.HasValue
                     };
                     clubItem.Items.Add(item);
                 }

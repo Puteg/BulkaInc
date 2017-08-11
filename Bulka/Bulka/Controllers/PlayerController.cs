@@ -146,7 +146,7 @@ namespace Bulka.Controllers
             _playersRepository.Delete(player);
             _playersRepository.Save();
 
-            return RedirectToAction("All");
+            return RedirectToAction("Index");
         }
 
         public JsonResult PlayerSerch(string query)

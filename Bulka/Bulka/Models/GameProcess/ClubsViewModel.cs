@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Bulka.Models.GameProcess
 {
@@ -16,6 +17,7 @@ namespace Bulka.Models.GameProcess
     {
         public ClubItemViewModel()
         {
+            Started = new List<GameProcessStartedViewModel>();
             Items = new List<GameProcessListItemViewModel>();
         }
 
@@ -24,7 +26,15 @@ namespace Bulka.Models.GameProcess
         public string PlayersCount { get; set; }
         public string Total { get; set; }
 
+        public List<GameProcessStartedViewModel> Started { get; set; }
         public List<GameProcessListItemViewModel> Items { get; set; }
+    }
+
+    public class GameProcessStartedViewModel
+    {
+        public int Id { get; set; }
+        public string DateTime { get; set; }
+        public string DirationTime { get; set; }
     }
 
     public class GameProcessListItemViewModel

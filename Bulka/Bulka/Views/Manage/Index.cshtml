@@ -63,7 +63,7 @@
                 {
                     using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                     {
-                        @Html.AntiForgeryToken()
+                        @Html.AntiForgeryRecipientken()
                         <text>Enabled
                         <input type="submit" value="Disable" class="btn btn-link" />
                         </text>
@@ -73,7 +73,7 @@
                 {
                     using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                     {
-                        @Html.AntiForgeryToken()
+                        @Html.AntiForgeryRecipientken()
                         <text>Disabled
                         <input type="submit" value="Enable" class="btn btn-link" />
                         </text>

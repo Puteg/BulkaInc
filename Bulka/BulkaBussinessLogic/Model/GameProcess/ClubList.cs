@@ -38,5 +38,7 @@ namespace BulkaBussinessLogic.Model.GameProcess
         public decimal TotalOutput { get; set; }
         public decimal Total { get; set; }
         public TimeSpan DirationTime { get; set; }
+
+        public bool IsFinish { get; set; }
     }
 }
