@@ -3,6 +3,7 @@
 <div class="x_panel">
     <div class="x_title">
         <h2>
+            Список переводов
         </h2>
         <ul class="nav navbar-right panel_toolbox">
             <li>
@@ -37,6 +38,7 @@
                         <td>@item.Sender</td>
                         <td>@item.Recipient</td>
                         <td>
+                            <a href="@Url.Action("Edit", "Payment", new {id = item.Id})" class=""> Открыть </a>
                         </td>
                     </tr>
                 }

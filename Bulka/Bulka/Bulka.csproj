@@ -203,6 +203,7 @@
     <Compile Include="Controllers\GameProcessController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Helpers\DecimalExtentions.cs" />
@@ -210,6 +211,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mappings\PaymentToViewModelMappingProfile.cs" />
     <Compile Include="Mappings\ClubToViewModelMappingProfile.cs" />
     <Compile Include="Mappings\GameProcessToViewModelMappingProfile.cs" />
     <Compile Include="Mappings\PlayerToViewModelMappingProfile.cs" />
@@ -405,6 +407,8 @@
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Profile\Edit.cshtml" />
     <Content Include="Views\GameProcess\CreateTest.cshtml" />
+    <None Include="Views\Payment\Edit.cshtml" />
+    <None Include="Views\Payment\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
